@@ -75,9 +75,12 @@ const validateMember = (data) => {
       .required()
       .label("ไม่มีข้อมูลรหัสผ่าน"),
     address: Joi.string().required().label("กรุณากรอกที่อยู่"),
-    member_position: Joi.string().required().label("กรุณากรอกระดับ"),
+    subdistrict:Joi.string().required().label("กรุณากรอก ที่อยู่ เเขวน ตำบล"),
+    district:Joi.string().required().label("กรุณากรอก เขต"),
+    province:Joi.string().required().label("กรุณากรอก จังหวัด"),
+    postcode:Joi.string().required().label("กรุณากรอก รหัสไปรษณีย์"),
   });
-  return schema.validateMember(data);
+  return schema.validate(data);
 };
 
 module.exports = { Member, validateMember };

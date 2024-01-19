@@ -149,6 +149,12 @@ exports.create = async (req, res) => {
         }
         profile_image = reqFiles[0];
       }
+      const { error } = validateMember(req.body);
+      if (error)
+        return res
+          .status(400)
+          .send({ message: error.details[0].message, status: false });
+
       const user = await Member.findOne({ tel: req.body.tel });
       if (user) {
         return res
