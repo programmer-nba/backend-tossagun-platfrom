@@ -7,6 +7,12 @@ const authMember = require("../lib/auth-member");
 
 router.post("/login", async (req, res) => {
   try {
+    if (!req.body.tel) {
+      return res.status(400).send({
+        status: false,
+        message: "กรุณากรอกเบอร์โทรศัพท์ หรือ ชื่อผู้ใช้",
+      });
+    }
     const members = await Member.findOne({
       tel: req.body.tel,
     });
@@ -15,12 +21,6 @@ router.post("/login", async (req, res) => {
       req.body.password,
       members.password
     );
-    if (!members || !members.otp) {
-      return res.status(401).send({
-        status: false,
-        message: "กรุณายืนยันตัวตนก่อนเข้าสู่ระบบ",
-      });
-    }
     if (!validateMember) {
       return res.status(401).send({
         status: false,
@@ -45,7 +45,7 @@ router.post("/login", async (req, res) => {
     console.error(err);
     return res
       .status(500)
-      .send({ status: false, message: "Internal Server Error" });
+      .send({ status: false, message: "ชื่อผู้ใช้ หรือ รหัสผ่านไม่ถูกต้อง" });
   }
 });
 router.get("/me", authMember, async (req, res) => {
@@ -60,10 +60,9 @@ router.get("/me", authMember, async (req, res) => {
           .send({ message: "มีบางอย่างผิดพลาด", status: false });
       } else {
         return res.status(200).send({
-          name: hr.hr_name,
-          username: hr.Hr_username,
+          name: members.name,
+          username: members.tel,
           position: "member",
-          level: hr.hr_position,
         });
       }
     }
