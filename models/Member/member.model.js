@@ -75,6 +75,7 @@ const validateMember = (data) => {
       .required()
       .label("ไม่มีข้อมูลรหัสผ่าน"),
     address: Joi.string().required().label("กรุณากรอกที่อยู่"),
+    member_position: Joi.string().required().label("กรุณากรอกระดับ"),
   });
   return schema.validateMember(data);
 };

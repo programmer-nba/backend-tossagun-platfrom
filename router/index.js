@@ -9,10 +9,10 @@ router.post("/login", async (req, res) => {
   try {
     if (!req.body.tel) {
       return res.status(400).send({
-        status: false,
-        message: "กรุณากรอกเบอร์โทรศัพท์ หรือ ชื่อผู้ใช้",
+          status: false,
+          message: "กรุณากรอกเบอร์โทรศัพท์ หรือ ชื่อผู้ใช้",
       });
-    }
+  }
     const members = await Member.findOne({
       tel: req.body.tel,
     });
@@ -62,7 +62,6 @@ router.get("/me", authMember, async (req, res) => {
         return res.status(200).send({
           name: members.name,
           username: members.tel,
-          position: "member",
         });
       }
     }
