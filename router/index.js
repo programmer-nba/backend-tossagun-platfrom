@@ -45,7 +45,7 @@ router.post("/login", async (req, res) => {
     console.error(err);
     return res
       .status(500)
-      .send({ status: false, message: "ชื่อผู้ใช้ หรือ รหัสผ่านไม่ถูกต้อง" });
+      .send({ status: false, message: err.message });
   }
 });
 router.get("/me", authMember, async (req, res) => {
@@ -66,7 +66,7 @@ router.get("/me", authMember, async (req, res) => {
       }
     }
   } catch (error) {
-    res.status(500).send({ message: "Internal Server Error", status: false });
+    res.status(500).send({ message:err.message, status: false });
   }
 });
 
