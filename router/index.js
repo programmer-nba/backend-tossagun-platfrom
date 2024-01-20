@@ -9,10 +9,10 @@ router.post("/login", async (req, res) => {
   try {
     if (!req.body.tel) {
       return res.status(400).send({
-          status: false,
-          message: "กรุณากรอกเบอร์โทรศัพท์ หรือ ชื่อผู้ใช้",
+        status: false,
+        message: "กรุณากรอกเบอร์โทรศัพท์ หรือ ชื่อผู้ใช้",
       });
-  }
+    }
     const members = await Member.findOne({
       tel: req.body.tel,
     });
@@ -43,9 +43,7 @@ router.post("/login", async (req, res) => {
     });
   } catch (err) {
     console.error(err);
-    return res
-      .status(500)
-      .send({ status: false, message: err.message });
+    return res.status(500).send({ status: false, message: err.message });
   }
 });
 router.get("/me", authMember, async (req, res) => {
@@ -66,7 +64,7 @@ router.get("/me", authMember, async (req, res) => {
       }
     }
   } catch (error) {
-    res.status(500).send({ message:err.message, status: false });
+    res.status(500).send({ message: err.message, status: false });
   }
 });
 
