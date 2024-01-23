@@ -452,8 +452,8 @@ exports.GetAllMember = async (req, res) => {
 };
 exports.GetMemberById = async (req, res) => {
   try {
-    const cardNumber = req.params.id;
-    const member = await Member.findOne({ card_number: cardNumber });
+    const id = req.params.id;
+    const member = await Member.findOne({_id:id});
     if (member) {
       return res.status(200).send({
         status: true,
