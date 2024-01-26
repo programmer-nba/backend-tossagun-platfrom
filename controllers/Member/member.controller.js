@@ -387,7 +387,6 @@ exports.ImportBank = async (req, res) => {
       const id = req.params.id;
       if (id && !req.body.password) {
         const member = await Member.findByIdAndUpdate(id, {
-          ...req.body,
           "bank.name": req.body.name,
           "bank.number": req.body.number,
           "bank.image": reqFiles[0],
