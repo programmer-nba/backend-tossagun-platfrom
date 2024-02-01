@@ -130,43 +130,78 @@ exports.check = async (req, res) => {
     return res.status(500).send({ message: "มีบางอย่างผิดพลาด" });
   }
 };
+//ตรวจจสอบรหัสผู้เชิญชวน
+exports.CheckInvit = async (req, res) => {
+  try {
+    const tels = req.body.tel;
+    const member = await Member.findOne({ tel: tels });
+    console.log(member);
+    if (member) {
+      return res.status(200).send({
+        status: true,
+        message: "ดึงข้อมูลสมาชิกสำเร็จ",
+        data: member,
+      });
+    } else {
+      return res
+        .status(404)
+        .send({ message: "ไม่พบข้อมูลสมาชิก", status: false });
+    }
+  } catch (error) {
+    res.status(500).send({
+      message: "มีบางอย่างผิดพลาด",
+      status: false,
+    });
+  }
+};
 exports.create = async (req, res) => {
   try {
     let upload = multer({ storage: storage }).array("imgCollection", 20);
     upload(req, res, async function (err) {
-      const reqFiles = [];
-      const result = [];
       if (err) {
         return res.status(500).send(err);
       }
-      let profile_image = ""; // ตั้งตัวแปรรูป
-      if (req.files) {
-        const url = req.protocol + "://" + req.get("host");
-        for (var i = 0; i < req.files.length; i++) {
-          const src = await uploadFileCreate(req.files, res, { i, reqFiles });
-          result.push(src);
-          //   reqFiles.push(url + "/public/" + req.files[i].filename);
-        }
-        profile_image = reqFiles[0];
+
+      const reqFiles = [];
+      const result = [];
+      const url = req.protocol + "://" + req.get("host");
+
+      // Fetch image data
+      for (var i = 0; i < req.files.length; i++) {
+        const src = await uploadFileCreate(req.files, res, { i, reqFiles });
+        result.push(src);
       }
+      let profile_image = reqFiles[0];
+
+      // Validate member data
       const { error } = validateMember(req.body);
-      if (error)
+      if (error) {
         return res
           .status(400)
           .send({ message: error.details[0].message, status: false });
+      }
 
+      // Check existing user
       const user = await Member.findOne({ tel: req.body.tel });
       if (user) {
         return res
           .status(409)
           .send({ status: false, message: "username นี้มีคนใช้แล้ว" });
       }
+      const tels = req.body.recommended_Code;
+      const member1 = await Member.findOne({ tel: tels });
+      if (!member1) {
+        return res
+          .status(404)
+          .send({ message: "ไม่พบข้อมูลสมาชิก", status: false });
+      }r
       const salt = await bcrypt.genSalt(Number(process.env.SALT));
       const hashPassword = await bcrypt.hash(req.body.password, salt);
       const member = new Member({
         profile_image: profile_image,
         card_number: req.body.card_number,
         name: req.body.name,
+        recommended_Code: req.body.recommended_Code,
         tel: req.body.tel,
         password: hashPassword,
         address: req.body.address,
@@ -178,6 +213,7 @@ exports.create = async (req, res) => {
         partner_shop_name: req.body.partner_shop_name,
         partner_shop_address: req.body.partner_shop_address,
       });
+
       const add = await member.save();
       return res.status(200).send({
         status: true,
@@ -189,6 +225,7 @@ exports.create = async (req, res) => {
     return res.status(500).send({ status: false, error: error.message });
   }
 };
+
 //ลืมรหัสผ่าน ตรวจสอบ sms otp สำหรับเพื่อแก้ไขรหัสผ่าน
 exports.checkForgotPassword = async (req, res) => {
   try {

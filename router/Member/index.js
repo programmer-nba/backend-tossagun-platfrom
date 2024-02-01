@@ -4,6 +4,7 @@ const member = require("../../controllers/Member/member.controller");
 
 router.post("/verify", member.verify); //ส่ง otp
 router.post("/check", member.check); //ตรวจสอบ otp
+router.post("/CheckInvite",member.CheckInvit)//ตรวจสอบผู้เชิญชวน
 router.post("/create", member.create); //สร้าง user
 router.post("/checkForgotPassword/:id", member.checkForgotPassword);
 router.put("/EditMember/:id", member.EditMember); //เเก้ไขข้อมูลสมาชิก

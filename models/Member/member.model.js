@@ -22,6 +22,7 @@ const MemberSchema = new mongoose.Schema({
   district: { type: String, required: false }, //เขต
   province: { type: String, required: false }, //จังหวัด
   postcode: { type: String, required: false }, //รหัสไปรษณีย์
+  recommended_Code: { type: String, required: false },//รหัสเเนะนำ
   partner_group: { type: String }, //พันธมิตร กลุ่ม
   partner_shop_name: { type: String }, //พันธมิตร ชื่อร้าน
   partner_shop_address: { type: String }, //พันธมิตร ที่อยู่
@@ -81,6 +82,7 @@ const validateMember = (data) => {
     district: Joi.string().required().label("กรุณากรอก เขต"),
     province: Joi.string().required().label("กรุณากรอก จังหวัด"),
     postcode: Joi.string().required().label("กรุณากรอก รหัสไปรษณีย์"),
+    recommended_Code: Joi.string().required().label("กรุณากรอก รหัสผู้เเนะนำ"),
   });
   return schema.validate(data);
 };

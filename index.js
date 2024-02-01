@@ -15,5 +15,7 @@ const prefix = "/tossagun-platform";
 app.use(prefix + "/", require("./router"));
 app.use(prefix + "/Member", require("./router/Member/index"));
 
+
+app.use(prefix + "/history", require("./router/history/index"));
 const port = process.env.PORT || 4541;
 app.listen(port, console.log(`Listening on port ${port}`));
