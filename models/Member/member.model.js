@@ -50,7 +50,7 @@ const MemberSchema = new mongoose.Schema({
     lv2: { type: String, required: false, default: "-" },
     lv3: { type: String, required: false, default: "-" },
   },
-  lastLogin: { type: String, required: false },//เวลาล็อคินล่าสุด
+  lastLogin: { type: String, required: false }, //เวลาล็อคินล่าสุด
   timmestamp: { type: Date, required: false, default: Date.now() },
   ipAdress: { type: String, required: false }, //id ของเครื่องที่ login
   status: { type: Boolean, required: false, default: true },

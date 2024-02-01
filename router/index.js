@@ -8,12 +8,10 @@ const authMember = require("../lib/auth-member");
 const getmac = require("getmac");
 const MACAddress = getmac.default();
 
-
 router.post("/login", async (req, res) => {
   const currentTime = new Date();
   try {
     const macAddress = getmac.default();
-    console.log(macAddress)
     if (!req.body.tel) {
       return res.status(400).send({
         status: false,
@@ -34,8 +32,16 @@ router.post("/login", async (req, res) => {
         message: "รหัสผ่านไม่ถูกต้อง",
       });
     }
-    members.lastLogin = currentTime; // เพิ่ม field เวลาล็อกอิน
-    await members.save(); // บันทึกข้อมูลลงในฐานข้อมูล
+    members.lastLogin = currentTime; 
+    const historyData = {
+      name: members.name,  
+      lastLogin: currentTime,
+      ipAdress: macAddress,
+      status: true,
+    };
+    const history = new History(historyData);
+    await history.save();
+    await members.save(); 
     const token = members.generateAuthToken();
     const responseData = {
       _id: members._id,

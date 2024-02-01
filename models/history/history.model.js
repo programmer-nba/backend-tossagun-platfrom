@@ -15,13 +15,20 @@ const complexityOptions = {
 };
 
 const HistorySchema = new mongoose.Schema({
+  name: { type: String, required: false },//ชื่อคนล็อคอิน
   lastLogin: { type: String, required: false }, //เวลาล็อคินล่าสุด
   ipAdress: { type: String, required: false }, //id ของเครื่องที่ login
+  MacAddress: { type: String, required: false },
   status: { type: Boolean, required: false, default: true },
 });
 HistorySchema.methods.generateAuthToken = function () {
   const token = jwt.sign(
-    { _id: this._id, name: this.name, row: "member", MACAddress, ipAddress: this.ipAddress },
+    {
+      _id: this._id,
+      name: this.name,
+      MACAddress,
+      ipAddress: this.ipAddress,
+    },
     process.env.JWTPRIVATEKEY,
     {
       expiresIn: "4h",
