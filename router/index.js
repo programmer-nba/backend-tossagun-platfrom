@@ -12,6 +12,7 @@ router.post("/login", async (req, res) => {
   const currentTime = new Date();
   try {
     const macAddress = getmac.default();
+    const IpAddress = req.body.ipAdress;
     if (!req.body.tel) {
       return res.status(400).send({
         status: false,
@@ -32,11 +33,12 @@ router.post("/login", async (req, res) => {
         message: "รหัสผ่านไม่ถูกต้อง",
       });
     }
-    members.lastLogin = currentTime; 
+    members.lastLogin = Date.now();
     const historyData = {
       name: members.name,  
       lastLogin: currentTime,
-      ipAdress: macAddress,
+      MacAddress: macAddress,
+      ipAdress: IpAddress, 
       status: true,
     };
     const history = new History(historyData);
