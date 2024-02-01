@@ -1,6 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const app = express();
+app.set('trust proxy', false);
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const connection = require("./config/db");

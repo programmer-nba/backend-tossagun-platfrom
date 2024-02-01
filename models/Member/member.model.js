@@ -50,7 +50,9 @@ const MemberSchema = new mongoose.Schema({
     lv2: { type: String, required: false, default: "-" },
     lv3: { type: String, required: false, default: "-" },
   },
+  lastLogin: { type: String, required: false },//เวลาล็อคินล่าสุด
   timmestamp: { type: Date, required: false, default: Date.now() },
+  ipAdress: { type: String, required: false }, //id ของเครื่องที่ login
   status: { type: Boolean, required: false, default: true },
 });
 MemberSchema.methods.generateAuthToken = function () {
@@ -75,10 +77,10 @@ const validateMember = (data) => {
       .required()
       .label("ไม่มีข้อมูลรหัสผ่าน"),
     address: Joi.string().required().label("กรุณากรอกที่อยู่"),
-    subdistrict:Joi.string().required().label("กรุณากรอก ที่อยู่ เเขวน ตำบล"),
-    district:Joi.string().required().label("กรุณากรอก เขต"),
-    province:Joi.string().required().label("กรุณากรอก จังหวัด"),
-    postcode:Joi.string().required().label("กรุณากรอก รหัสไปรษณีย์"),
+    subdistrict: Joi.string().required().label("กรุณากรอก ที่อยู่ เเขวน ตำบล"),
+    district: Joi.string().required().label("กรุณากรอก เขต"),
+    province: Joi.string().required().label("กรุณากรอก จังหวัด"),
+    postcode: Joi.string().required().label("กรุณากรอก รหัสไปรษณีย์"),
   });
   return schema.validate(data);
 };
