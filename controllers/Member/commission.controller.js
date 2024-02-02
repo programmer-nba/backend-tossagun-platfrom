@@ -1,2 +1,2 @@
 const axios = require('axios');
-const {Commission} = require("../models/commission.model");
+const {Commission} = require("../../models/Member/commission.model");
