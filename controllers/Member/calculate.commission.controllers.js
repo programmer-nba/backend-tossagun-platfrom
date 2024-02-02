@@ -50,100 +50,100 @@ exports.giveCommission = async (req, res) => {
     const new_allsale = member.allsale + req.body.central.allsale;
 
     await Member.findByIdAndUpdate(member._id, {
-      money: new_money_owner,
-      allsale: new_allsale,
+            money: new_money_owner,
+            allsale: new_allsale,
     });
     //history
     const owner_history = {
-      from: member.name,
-      mem_id: member._id,
-      invoice: req.body.invoice,
-      type: "เข้า",
-      amount: req.body.platform.owner,
-      vat: vat_owner.vat,
-      total: vat_owner.amount,
-      detail: `คอมมิชชั่นจากใบเสร็จเลขที่ ${req.body.invoice} (หักภาษี ณ ที่จ่ายเรียบร้อยแล้ว)`,
-      timestamp: dayjs(Date.now()).format(),
+            from: member.name,
+            mem_id: member._id,
+            invoice: req.body.invoice,
+            type: "เข้า",
+            amount: req.body.platform.owner,
+            vat: vat_owner.vat,
+            total: vat_owner.amount,
+            detail: `คอมมิชชั่นจากใบเสร็จเลขที่ ${req.body.invoice} (หักภาษี ณ ที่จ่ายเรียบร้อยแล้ว)`,
+            timestamp: dayjs(Date.now()).format(),
     };
     await MoneyHistory.create(owner_history);
     //LV1
     if (member.upline.lv1 !== "-") {
-      const mem_lv1 = await Member.findById(member.upline.lv1);
-      const vat_lv1 = vatTreePercen(req.body.platform.lv1);
-      const new_money_lv1 = mem_lv1.money + vat_lv1.amount;
-      const new_allsale_lv1 = mem_lv1.allsale + req.body.central.allsale;
+            const mem_lv1 = await Member.findById(member.upline.lv1);
+            const vat_lv1 = vatTreePercen(req.body.platform.lv1);
+            const new_money_lv1 = mem_lv1.money + vat_lv1.amount;
+            const new_allsale_lv1 = mem_lv1.allsale + req.body.central.allsale;
       await Member.findByIdAndUpdate(mem_lv1._id, {
-        money: new_money_lv1,
-        allsale: new_allsale_lv1,
+            money: new_money_lv1,
+            allsale: new_allsale_lv1,
       });
       //history
       const lv1_history = {
-        from: member.name,
-        mem_id: mem_lv1._id,
-        invoice: req.body.invoice,
-        type: "เข้า",
-        amount: req.body.platform.lv1,
-        detail: `ส่วนแบ่งค่าคอมมิชชั่นจากผู้ใช้ที่เราแนะนำ ใบเสร็จเลขที่ ${req.body.invoice} (หักภาษี ณ ที่จ่ายเรียบร้อยแล้ว)`,
-        vat: vat_lv1.vat,
-        total: vat_lv1.amount,
-        timestamp: dayjs(Date.now()).format(),
+            from: member.name,
+            mem_id: mem_lv1._id,
+            invoice: req.body.invoice,
+            type: "เข้า",
+            amount: req.body.platform.lv1,
+            detail: `ส่วนแบ่งค่าคอมมิชชั่นจากผู้ใช้ที่เราแนะนำ ใบเสร็จเลขที่ ${req.body.invoice} (หักภาษี ณ ที่จ่ายเรียบร้อยแล้ว)`,
+            vat: vat_lv1.vat,
+            total: vat_lv1.amount,
+            timestamp: dayjs(Date.now()).format(),
       };
       await MoneyHistory.create(lv1_history);
     }
     //LV2
     if (member.upline.lv2 !== "-") {
-      const mem_lv2 = await Member.findById(member.upline.lv2);
-      const vat_lv2 = vatTreePercen(req.body.platform.lv2);
-      const new_money_lv2 = mem_lv2.money + vat_lv2.amount;
-      const new_allsale_lv2 = mem_lv2.allsale + req.body.central.allsale;
+            const mem_lv2 = await Member.findById(member.upline.lv2);
+            const vat_lv2 = vatTreePercen(req.body.platform.lv2);
+            const new_money_lv2 = mem_lv2.money + vat_lv2.amount;
+            const new_allsale_lv2 = mem_lv2.allsale + req.body.central.allsale;
       await Member.findByIdAndUpdate(mem_lv2._id, {
-        money: new_money_lv2,
-        allsale: new_allsale_lv2,
+            money: new_money_lv2,
+            allsale: new_allsale_lv2,
       });
       //history
       const lv2_history = {
-        from: member.name,
-        mem_id: mem_lv2._id,
-        invoice: req.body.invoice,
-        type: "เข้า",
-        amount: req.body.platform.lv2,
-        detail: `ส่วนแบ่งค่าคอมมิชชั่นจากผู้ใช้ที่เราแนะนำ ใบเสร็จเลขที่ ${req.body.invoice} (หักภาษี ณ ที่จ่ายเรียบร้อยแล้ว)`,
-        vat: vat_lv2.vat,
-        total: vat_lv2.amount,
-        timestamp: dayjs(Date.now()).format(),
+            from: member.name,
+            mem_id: mem_lv2._id,
+            invoice: req.body.invoice,
+            type: "เข้า",
+            amount: req.body.platform.lv2,
+            detail: `ส่วนแบ่งค่าคอมมิชชั่นจากผู้ใช้ที่เราแนะนำ ใบเสร็จเลขที่ ${req.body.invoice} (หักภาษี ณ ที่จ่ายเรียบร้อยแล้ว)`,
+            vat: vat_lv2.vat,
+            total: vat_lv2.amount,
+            timestamp: dayjs(Date.now()).format(),
       };
       await MoneyHistory.create(lv2_history);
     }
     //LV3
     if (member.upline.lv3 !== "-") {
-      const mem_lv3 = await Member.findById(member.upline.lv3);
-      const vat_lv3 = vatTreePercen(req.body.platform.lv3);
-      const new_money_lv3 = mem_lv3.money + vat_lv3.amount;
-      const new_allsale_lv3 = mem_lv3.allsale + req.body.central.allsale;
+            const mem_lv3 = await Member.findById(member.upline.lv3);
+            const vat_lv3 = vatTreePercen(req.body.platform.lv3);
+            const new_money_lv3 = mem_lv3.money + vat_lv3.amount;
+            const new_allsale_lv3 = mem_lv3.allsale + req.body.central.allsale;
       await Member.findByIdAndUpdate(mem_lv3._id, {
-        money: new_money_lv3,
-        allsale: new_allsale_lv3,
+            money: new_money_lv3,
+            allsale: new_allsale_lv3,
       });
       //history
       const lv3_history = {
-        from: member.name,
-        mem_id: mem_lv3._id,
-        invoice: req.body.invoice,
-        type: "เข้า",
-        amount: req.body.platform.lv3,
-        detail: `ส่วนแบ่งค่าคอมมิชชั่นจากผู้ใช้ที่เราแนะนำ ใบเสร็จเลขที่ ${req.body.invoice} (หักภาษี ณ ที่จ่ายเรียบร้อยแล้ว)`,
-        vat: vat_lv3.vat,
-        total: vat_lv3.amount,
-        timestamp: dayjs(Date.now()).format(),
+            from: member.name,
+            mem_id: mem_lv3._id,
+            invoice: req.body.invoice,
+            type: "เข้า",
+            amount: req.body.platform.lv3,
+            detail: `ส่วนแบ่งค่าคอมมิชชั่นจากผู้ใช้ที่เราแนะนำ ใบเสร็จเลขที่ ${req.body.invoice} (หักภาษี ณ ที่จ่ายเรียบร้อยแล้ว)`,
+            vat: vat_lv3.vat,
+            total: vat_lv3.amount,
+            timestamp: dayjs(Date.now()).format(),
       };
       await MoneyHistory.create(lv3_history);
     }
     //บันทึกข้อมูลลง money saving เพื่อสะสม
     const saving = {
-      allsale: req.body.central.allsale,
-      central: req.body.central.central,
-      emp_bonus: req.body.emp_bonus,
-      timestamp: dayjs(Date.now()).format(),
+            allsale: req.body.central.allsale,
+            central: req.body.central.central,
+            emp_bonus: req.body.emp_bonus,
+            timestamp: dayjs(Date.now()).format(),
     };
     await MoneySavings.create(saving);
     return res.status(200).send({
