@@ -27,7 +27,7 @@ const MemberSchema = new mongoose.Schema({
   passcode: { type: Number, required: false, default: "" },
   Member_pin: { type: String },
   profile_image: { type: String, required: false, default: "" },
-  addsale: { type: String, required: false }, //ยอดสะสมการขาย
+  allsale: { type: Number, required: false, default: 0 }, //ยอดสะสมการขาย
   happy_point: { type: Number, required: false, default: 0 },
   bank: {
     name: { type: String, required: false, default: "-" },
