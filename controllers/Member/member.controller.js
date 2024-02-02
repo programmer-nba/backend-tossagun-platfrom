@@ -135,7 +135,7 @@ exports.check = async (req, res) => {
 //ตรวจจสอบรหัสผู้เชิญชวน
 exports.CheckInvit = async (req, res) => {
   try {
-    const tels = req.body.tel;
+    const tels = req.params.tel;
     const member = await Member.findOne({ tel: tels });
     if (member) {
       return res.status(200).send({
@@ -162,6 +162,12 @@ exports.create = async (req, res) => {
       return res
         .status(400)
         .send({ message: error.details[0].message, status: false });
+    }
+    const checkTel = await Member.findOne({tel: req.body.tel});
+    if (checkTel) {
+      return res
+        .status(400)
+        .send({status: false, message: "เบอร์โทรศัพท์เป็นสมาชิกอยู่แล้ว"});
     }
     const card_number = `888${req.body.tel}`;
     const salt = await bcrypt.genSalt(Number(process.env.SALT));

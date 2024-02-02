@@ -75,7 +75,6 @@ const validateMember = (data) => {
     district: Joi.string().required().label("กรุณากรอก เขต"),
     province: Joi.string().required().label("กรุณากรอก จังหวัด"),
     postcode: Joi.string().required().label("กรุณากรอก รหัสไปรษณีย์"),
-    recommended_Code: Joi.string().required().label("กรุณากรอก รหัสผู้เเนะนำ"),
   });
   return schema.validate(data);
 };
