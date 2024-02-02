@@ -26,7 +26,6 @@ const validate_commission = (data) => {
   });
   return schema.validate(data);
 };
-
 exports.giveCommission = async (req, res) => {
   try {
     const { error } = validate_commission(req.body);
@@ -155,3 +154,34 @@ exports.giveCommission = async (req, res) => {
     return res.status(500).send({ message: "มีบางอย่างผิดพลาด" });
   }
 };
+
+exports.GetBYtel = async(req,res) =>{
+    try {
+        const tel = req.params.tel;
+        const member = await Member.findOne({tel: tel});
+        if (member) {
+          const res_data = {
+            name: member.name,
+            tel: member.tel,
+            address: member.address,
+            subdistrict: member.subdistrict,
+            district: member.district,
+            province: member.province,
+            postcode: member.postcode,
+            commission: member.commission,
+            happy_point: member.happy_point,
+            allsale: member.allsale,
+            wallet:member.wallet,
+            money:member.money
+          };
+          return res.status(200).send({status: true, data: res_data});
+        } else {
+          return res
+            .status(400)
+            .send({status: false, message: "ไม่มีสมาชิกเบอร์นี้ในระบบ"});
+        }
+      } catch (err) {
+        console.log(err);
+        return res.status(500).send({message: "มีบางอย่างผิดพลาด"});
+      }
+}
