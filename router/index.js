@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const { Member, validateMember } = require("../models/Member/member.model");
 const { History } = require("../models/history/history.model");
+const authMe = require("../lib/authMe")
 const authMember = require("../lib/auth-member");
 const getmac = require("getmac");
 const MACAddress = getmac.default();
@@ -77,7 +78,7 @@ router.post("/history", async (req, res) => {
   }
 });
 
-router.get("/me", authMember, async (req, res) => {
+router.get("/me", authMe, async (req, res) => {
   try {
     const { decoded } = req;
     if (decoded && decoded.row === "member") {

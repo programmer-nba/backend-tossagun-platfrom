@@ -136,6 +136,7 @@ exports.check = async (req, res) => {
 exports.CheckInvit = async (req, res) => {
   try {
     const tels = req.params.tel;
+    console.log(tels)
     const member = await Member.findOne({ tel: tels });
     if (member) {
       return res.status(200).send({

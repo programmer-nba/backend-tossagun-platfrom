@@ -62,7 +62,7 @@ exports.GetHistoryById = async (req, res) => {
     });
   }
 };
-exports.DeletaAll = async (req,res) =>{
+exports.DeletaAll = async (req, res) => {
   try {
     const result = await History.deleteMany({});
 
@@ -82,4 +82,28 @@ exports.DeletaAll = async (req,res) =>{
       .status(500)
       .send({ status: false, message: "มีบางอย่างผิดพลาด" });
   }
-}
+};
+exports.GetHistoryByName = async (req, res) => {
+  try {
+    const name = req.body.name;
+    const history = await History.find({ name: name });
+    if (history.length > 0) {
+      return res.status(200).json({
+        status: true,
+        message: "ดึงข้อมูลประวัติการเข้าสู่ระบบสำเร็จ",
+        data: history,
+      });
+    } else {
+      return res.status(404).json({
+        status: false,
+        message: "ไม่พบข้อมูลประวัติการเข้าสู่ระบบ",
+      });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      status: false,
+      message: "มีบางอย่างผิดพลาด",
+    });
+  }
+};
