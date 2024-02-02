@@ -13,6 +13,7 @@ const complexityOptions = {
 };
 
 const MemberSchema = new mongoose.Schema({
+  number: { type: String, required: false }, //เลขสมาชิก
   card_number: { type: String, required: false }, //บัตรประชาชน
   name: { type: String, required: false }, //ชื่อ
   tel: { type: String, required: false }, //เบอร์โทร
@@ -22,9 +23,6 @@ const MemberSchema = new mongoose.Schema({
   district: { type: String, required: false }, //เขต
   province: { type: String, required: false }, //จังหวัด
   postcode: { type: String, required: false }, //รหัสไปรษณีย์
-  partner_group: { type: String }, //พันธมิตร กลุ่ม
-  partner_shop_name: { type: String }, //พันธมิตร ชื่อร้าน
-  partner_shop_address: { type: String }, //พันธมิตร ที่อยู่
   wallet: { type: Number, required: false, default: 0 }, //ยอดเงินในประเป๋าอิเล็กทรอนิกส์
   money: { type: Number, required: false, default: 0 }, //ยอดรายได้สะสม
   passcode: { type: Number, required: false, default: "" },
@@ -50,9 +48,7 @@ const MemberSchema = new mongoose.Schema({
     lv2: { type: String, required: false, default: "-" },
     lv3: { type: String, required: false, default: "-" },
   },
-  lastLogin: { type: String, required: false }, //เวลาล็อคินล่าสุด
   timmestamp: { type: Date, required: false, default: Date.now() },
-  ipAdress: { type: String, required: false }, //id ของเครื่องที่ login
   status: { type: Boolean, required: false, default: true },
 });
 MemberSchema.methods.generateAuthToken = function () {

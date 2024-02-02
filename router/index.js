@@ -50,7 +50,6 @@ router.post("/login", async (req, res) => {
       name: members.name,
       address: members.address,
       tel: members.tel,
-      lastLogin: currentTime,
     };
     return res.status(200).send({
       status: true,
