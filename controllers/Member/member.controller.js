@@ -146,7 +146,7 @@ exports.CheckInvit = async (req, res) => {
     } else {
       return res
         .status(404)
-        .send({ message: "ไม่พบข้อมูลสมาชิก", status: false });
+        .send({ message: "ไม่พบข้อมูลสมาชิกผู้เเนะนำ", status: false });
     }
   } catch (error) {
     res.status(500).send({
