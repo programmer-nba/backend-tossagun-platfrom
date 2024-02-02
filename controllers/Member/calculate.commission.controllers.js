@@ -114,7 +114,6 @@ exports.giveCommission = async (req, res) => {
       };
       await MoneyHistory.create(lv2_history);
     }
-
     //LV3
     if (member.upline.lv3 !== "-") {
       const mem_lv3 = await Member.findById(member.upline.lv3);
@@ -143,7 +142,6 @@ exports.giveCommission = async (req, res) => {
     const saving = {
       allsale: req.body.central.allsale,
       central: req.body.central.central,
-      nba_profit: nba_profit,
       emp_bonus: req.body.emp_bonus,
       timestamp: dayjs(Date.now()).format(),
     };
@@ -151,10 +149,9 @@ exports.giveCommission = async (req, res) => {
     return res.status(200).send({
       status: true,
       message: "ทำรายการสำเร็จ",
-      nba_profit: nba_profit,
     });
   } catch (err) {
-    console.log(err);
+    console.log(err.message);
     return res.status(500).send({ message: "มีบางอย่างผิดพลาด" });
   }
 };
