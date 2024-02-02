@@ -172,9 +172,9 @@ exports.create = async (req, res) => {
     const card_number = `888${req.body.tel}`;
     const salt = await bcrypt.genSalt(Number(process.env.SALT));
     const hashPassword = await bcrypt.hash(req.body.password, salt);
-    if (req.body.recommended_Code) {
+    if (req.body.ref_tel) {
       const memberRef = await Member.findOne({
-        tel: req.body.recommended_Code,
+        tel: req.body.ref_tel,
       });
       if (memberRef) {
         const upline = {
