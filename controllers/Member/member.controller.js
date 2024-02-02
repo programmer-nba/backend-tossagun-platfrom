@@ -157,25 +157,6 @@ exports.CheckInvit = async (req, res) => {
 };
 exports.create = async (req, res) => {
   try {
-    const uploadPromise = new Promise((resolve, reject) => {
-      let upload = multer({ storage: storage }).array("imgCollection", 20);
-      upload(req, res, function (err) {
-        if (err) {
-          reject(err);
-        } else {
-          resolve();
-        }
-      });
-    });
-    await uploadPromise;
-    const reqFiles = [];
-    const result = [];
-    const url = req.protocol + "://" + req.get("host");
-    for (var i = 0; i < req.files.length; i++) {
-      const src = await uploadFileCreate(req.files, res, { i, reqFiles });
-      result.push(src);
-    }
-    let profile_image = reqFiles[0];
     const { error } = validateMember(req.body);
     if (error) {
       return res
@@ -197,7 +178,6 @@ exports.create = async (req, res) => {
         };
         data = {
           ...req.body,
-          profile_image: profile_image,
           card_number: card_number,
           password: hashPassword,
           upline: upline,
@@ -333,7 +313,6 @@ exports.ChangePassword = async (req, res) => {
     return res.status(500).send({ message: "มีบางอย่างผิดพลาด" });
   }
 };
-
 exports.EditMember = async (req, res) => {
   try {
     let upload = multer({ storage: storage }).array("imgCollection", 20);
