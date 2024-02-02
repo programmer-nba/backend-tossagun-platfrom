@@ -13,8 +13,7 @@ const complexityOptions = {
 };
 
 const MemberSchema = new mongoose.Schema({
-  number: { type: String, required: false }, //เลขสมาชิก
-  card_number: { type: String, required: false }, //บัตรประชาชน
+  card_number: { type: String, required: false }, //รหัสสมาชิก
   name: { type: String, required: false }, //ชื่อ
   tel: { type: String, required: false }, //เบอร์โทร
   password: { type: String, required: false }, //รหัสผ่าน
@@ -66,7 +65,6 @@ const Member = mongoose.model("Member", MemberSchema);
 
 const validateMember = (data) => {
   const schema = Joi.object({
-    card_number: Joi.string().required().label("กรุณากรอกเลขบัตรประชาชน"),
     name: Joi.string().required().label("กรุณากรอกชื่อ"),
     tel: Joi.string().required().label("กรุณากรอกเบอร์โทร"),
     password: passwordComplexity(complexityOptions)

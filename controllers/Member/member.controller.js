@@ -4,6 +4,7 @@ const Joi = require("joi");
 const { google } = require("googleapis");
 const { default: axios } = require("axios");
 const req = require("express/lib/request.js");
+const token_decode = require("../../lib/token_decode");
 const multer = require("multer");
 const jwt = require("jsonwebtoken");
 const { Member, validateMember } = require("../../models/Member/member.model");
@@ -181,6 +182,7 @@ exports.create = async (req, res) => {
         .status(400)
         .send({ message: error.details[0].message, status: false });
     }
+    const card_number = `888${req.body.tel}`;
     const salt = await bcrypt.genSalt(Number(process.env.SALT));
     const hashPassword = await bcrypt.hash(req.body.password, salt);
     if (req.body.recommended_Code) {
@@ -196,6 +198,7 @@ exports.create = async (req, res) => {
         data = {
           ...req.body,
           profile_image: profile_image,
+          card_number: card_number,
           password: hashPassword,
           upline: upline,
         };
@@ -297,6 +300,40 @@ exports.checkForgotPassword = async (req, res) => {
     return res.status(500).send({ message: "มีบางอย่างผิดพลาด" });
   }
 };
+exports.ChangePassword = async (req, res) => {
+  try {
+    const vali = (data) => {
+      const schema = Joi.object({
+        password: Joi.string().required().label("ไม่พบรหัสผ่าน"),
+      });
+      return schema.validate(data);
+    };
+    const { error } = vali(req.body);
+    if (error) {
+      return res
+        .status(400)
+        .send({ status: false, message: error.details[0].message });
+    }
+    const decode = token_decode(req.headers["auth-token"]);
+    const encrytedPassword = await bcrypt.hash(req.body.password, 10);
+    const member = await Member.findByIdAndUpdate(decode._id, {
+      password: encrytedPassword,
+    });
+    if (member) {
+      return res
+        .status(200)
+        .send({ status: true, message: "เปลี่ยนรหัสผ่านสำเร็จ" });
+    } else {
+      return res
+        .status(400)
+        .send({ status: false, message: "เปลี่ยนรหัสผ่านไม่สำเร็จ" });
+    }
+  } catch (err) {
+    console.log(err);
+    return res.status(500).send({ message: "มีบางอย่างผิดพลาด" });
+  }
+};
+
 exports.EditMember = async (req, res) => {
   try {
     let upload = multer({ storage: storage }).array("imgCollection", 20);
