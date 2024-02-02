@@ -14,6 +14,7 @@ const prefix = "/tossagun-platform";
 
 app.use(prefix + "/", require("./router"));
 app.use(prefix + "/Member", require("./router/Member/index"));
+app.use(prefix + "/commistion", require("./router/Member/commission"));
 
 
 app.use(prefix + "/history", require("./router/history/index"));
