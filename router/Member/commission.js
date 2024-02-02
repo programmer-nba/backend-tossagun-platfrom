@@ -3,8 +3,6 @@ const member = require("../../controllers/Member/calculate.commission.controller
 
 
 
-
-
 router.post('/givecommission', member.giveCommission);
 
 
