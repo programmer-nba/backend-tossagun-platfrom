@@ -17,6 +17,7 @@ const {
   uploadFileCreate,
   deleteFile,
 } = require("../../funtions/uploadfilecreate");
+const { dfareporting } = require("googleapis/build/src/apis/dfareporting");
 
 //ส่ง OTP
 exports.verify = async (req, res) => {
@@ -156,76 +157,79 @@ exports.CheckInvit = async (req, res) => {
 };
 exports.create = async (req, res) => {
   try {
-    let upload = multer({ storage: storage }).array("imgCollection", 20);
-    upload(req, res, async function (err) {
-      if (err) {
-        return res.status(500).send(err);
-      }
-
-      const reqFiles = [];
-      const result = [];
-      const url = req.protocol + "://" + req.get("host");
-
-      // Fetch image data
-      for (var i = 0; i < req.files.length; i++) {
-        const src = await uploadFileCreate(req.files, res, { i, reqFiles });
-        result.push(src);
-      }
-      let profile_image = reqFiles[0];
-
-      // Validate member data
-      const { error } = validateMember(req.body);
-      if (error) {
-        return res
-          .status(400)
-          .send({ message: error.details[0].message, status: false });
-      }
-
-      // Check existing user
-      const user = await Member.findOne({ tel: req.body.tel });
-      if (user) {
-        return res
-          .status(409)
-          .send({ status: false, message: "username นี้มีคนใช้แล้ว" });
-      }
-      const tels = req.body.recommended_Code;
-      const member1 = await Member.findOne({ tel: tels });
-      if (!member1) {
-        return res
-          .status(404)
-          .send({ message: "ไม่พบข้อมูลสมาชิก", status: false });
-      }r
-      const salt = await bcrypt.genSalt(Number(process.env.SALT));
-      const hashPassword = await bcrypt.hash(req.body.password, salt);
-      const member = new Member({
-        profile_image: profile_image,
-        card_number: req.body.card_number,
-        name: req.body.name,
-        recommended_Code: req.body.recommended_Code,
-        tel: req.body.tel,
-        password: hashPassword,
-        address: req.body.address,
-        subdistrict: req.body.subdistrict,
-        district: req.body.district,
-        province: req.body.province,
-        postcode: req.body.postcode,
-        partner_group: req.body.partner_group,
-        partner_shop_name: req.body.partner_shop_name,
-        partner_shop_address: req.body.partner_shop_address,
+    const uploadPromise = new Promise((resolve, reject) => {
+      let upload = multer({ storage: storage }).array("imgCollection", 20);
+      upload(req, res, function (err) {
+        if (err) {
+          reject(err);
+        } else {
+          resolve();
+        }
       });
+    });
+    await uploadPromise;
+    const reqFiles = [];
+    const result = [];
+    const url = req.protocol + "://" + req.get("host");
+              for (var i = 0; i < req.files.length; i++) {
+                const src = await uploadFileCreate(req.files, res, { i, reqFiles });
+                result.push(src);
+              }
+              let profile_image = reqFiles[0];
+              const { error } = validateMember(req.body);
+              if (error) {
+                return res
+                  .status(400)
+                  .send({ message: error.details[0].message, status: false });
+              }
+              const tels = req.body.recommended_Code;
+              const member1 = await Member.findOne({ tel: tels });
+ 
+              const addedMember = await Member.findOne({ tel: tels });
+              if (!member1) {
+                return res
+                  .status(404)
+                  .send({ message: "ไม่พบข้อมูลรหัสผู้เเนะนำ", status: false });
+              }
 
-      const add = await member.save();
-      return res.status(200).send({
-        status: true,
-        message: "คุณได้สร้างไอดี user เรียบร้อย",
-        data: add,
-      });
+    const salt = await bcrypt.genSalt(Number(process.env.SALT));
+    const hashPassword = await bcrypt.hash(req.body.password, salt);
+    const member = new Member({
+                profile_image: profile_image,
+                card_number: req.body.card_number,
+                name: req.body.name,
+                recommended_Code: req.body.recommended_Code,
+                tel: req.body.tel,
+                password: hashPassword,
+                address: req.body.address,
+                subdistrict: req.body.subdistrict,
+                district: req.body.district,
+                province: req.body.province,
+                postcode: req.body.postcode,
+                partner_group: req.body.partner_group,
+                partner_shop_name: req.body.partner_shop_name,
+                partner_shop_address: req.body.partner_shop_address,
+    });
+    const add = await member.save();
+              if (member1.upline.lv1 != '-') {
+                if (!member1.upline.lv2 != '-') {
+                  member1.upline.lv2 = add._id;
+                } else if (!member1.upline.lv3 != '-') {
+                  member1.upline.lv3 = add._id;
+                }
+              } else {
+                member1.upline.lv1 = add._id;
+              }
+              await member1.save();
+    return res.status(200).send({
+      status: true,
+      message: "คุณได้สร้างไอดี user เรียบร้อย",
+      data: add,
     });
   } catch (error) {
     return res.status(500).send({ status: false, error: error.message });
   }
 };
-
 //ลืมรหัสผ่าน ตรวจสอบ sms otp สำหรับเพื่อแก้ไขรหัสผ่าน
 exports.checkForgotPassword = async (req, res) => {
   try {
