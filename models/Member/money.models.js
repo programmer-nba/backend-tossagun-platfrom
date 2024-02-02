@@ -1,4 +1,4 @@
-//บันทึกรายการสะสมรวม เช่น ยอด all sale สะสม 
+//บันทึกรายการสะสมรวม เช่น ยอด all sale สะสม
 const mongoose = require("mongoose");
 const Joi = require("joi");
 const dayjs = require("dayjs");
@@ -7,7 +7,6 @@ const MoneySavingsSchema = new mongoose.Schema(
   {
     allsale: { type: Number, required: false, default: 0 },
     central: { type: Number, required: false, default: 0 },
-    nba_profit: { type: Number, required: false, default: 0 },
     emp_bonus: { type: Number, required: false, default: 0 },
     timestamp: {
       type: Date,
