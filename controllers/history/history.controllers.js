@@ -62,3 +62,24 @@ exports.GetHistoryById = async (req, res) => {
     });
   }
 };
+exports.DeletaAll = async (req,res) =>{
+  try {
+    const result = await History.deleteMany({});
+
+    if (result.deletedCount > 0) {
+      return res.status(200).send({
+        status: true,
+        message: "ลบข้อมูลประวัติการเข้าสู่ระบบทั้งหมดสำเร็จ",
+      });
+    } else {
+      return res.status(404).send({
+        status: false,
+        message: "ไม่พบข้อมูลประวัติการเข้าสู่ระบบที่ต้องการลบ",
+      });
+    }
+  } catch (err) {
+    return res
+      .status(500)
+      .send({ status: false, message: "มีบางอย่างผิดพลาด" });
+  }
+}

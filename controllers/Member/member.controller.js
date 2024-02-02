@@ -136,7 +136,6 @@ exports.CheckInvit = async (req, res) => {
   try {
     const tels = req.body.tel;
     const member = await Member.findOne({ tel: tels });
-    console.log(member);
     if (member) {
       return res.status(200).send({
         status: true,
@@ -171,56 +170,43 @@ exports.create = async (req, res) => {
     const reqFiles = [];
     const result = [];
     const url = req.protocol + "://" + req.get("host");
-              for (var i = 0; i < req.files.length; i++) {
-                const src = await uploadFileCreate(req.files, res, { i, reqFiles });
-                result.push(src);
-              }
-              let profile_image = reqFiles[0];
-              const { error } = validateMember(req.body);
-              if (error) {
-                return res
-                  .status(400)
-                  .send({ message: error.details[0].message, status: false });
-              }
-              const tels = req.body.recommended_Code;
-              const member1 = await Member.findOne({ tel: tels });
- 
-              const addedMember = await Member.findOne({ tel: tels });
-              if (!member1) {
-                return res
-                  .status(404)
-                  .send({ message: "ไม่พบข้อมูลรหัสผู้เเนะนำ", status: false });
-              }
-
+    for (var i = 0; i < req.files.length; i++) {
+      const src = await uploadFileCreate(req.files, res, { i, reqFiles });
+      result.push(src);
+    }
+    let profile_image = reqFiles[0];
+    const { error } = validateMember(req.body);
+    if (error) {
+      return res
+        .status(400)
+        .send({ message: error.details[0].message, status: false });
+    }
     const salt = await bcrypt.genSalt(Number(process.env.SALT));
     const hashPassword = await bcrypt.hash(req.body.password, salt);
-    const member = new Member({
-                profile_image: profile_image,
-                card_number: req.body.card_number,
-                name: req.body.name,
-                recommended_Code: req.body.recommended_Code,
-                tel: req.body.tel,
-                password: hashPassword,
-                address: req.body.address,
-                subdistrict: req.body.subdistrict,
-                district: req.body.district,
-                province: req.body.province,
-                postcode: req.body.postcode,
-                partner_group: req.body.partner_group,
-                partner_shop_name: req.body.partner_shop_name,
-                partner_shop_address: req.body.partner_shop_address,
-    });
-    const add = await member.save();
-              if (member1.upline.lv1 != '-') {
-                if (!member1.upline.lv2 != '-') {
-                  member1.upline.lv2 = add._id;
-                } else if (!member1.upline.lv3 != '-') {
-                  member1.upline.lv3 = add._id;
-                }
-              } else {
-                member1.upline.lv1 = add._id;
-              }
-              await member1.save();
+    if (req.body.recommended_Code) {
+      const memberRef = await Member.findOne({
+        tel: req.body.recommended_Code,
+      });
+      if (memberRef) {
+        const upline = {
+          lv1: memberRef._id,
+          lv2: memberRef.upline.lv1,
+          lv3: memberRef.upline.lv2,
+        };
+        data = {
+          ...req.body,
+          profile_image: profile_image,
+          password: hashPassword,
+          upline: upline,
+        };
+      } else {
+        return res.status(400).send({
+          status: false,
+          message: "ไม่พบข้อมูลผู้แนะนำเบอร์โทรที่แนะนำนี้",
+        });
+      }
+    }
+    const add = await Member.create(data);
     return res.status(200).send({
       status: true,
       message: "คุณได้สร้างไอดี user เรียบร้อย",
