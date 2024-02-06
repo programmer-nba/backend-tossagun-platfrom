@@ -27,7 +27,7 @@ const MemberSchema = new mongoose.Schema({
     new_subdistrict: { type: String, required: false, default: "" }, //ที่อยู่ เเขวน ตำบล
     new_district: { type: String, required: false, default: "" }, //เขต
     new_province: { type: String, required: false, default: "" }, //จังหวัด
-    new_postcode: { type: String, required: false, default: "" }, //รหัสไปรษณีย์
+    new_postcode: { type: String, required: false, default: "-" }, //รหัสไปรษณีย์
   }, //ที่อยู่
   wallet: { type: Number, required: false, default: 0 }, //ยอดเงินในประเป๋าอิเล็กทรอนิกส์
   money: { type: Number, required: false, default: 0 }, //ยอดรายได้สะสม
@@ -78,6 +78,14 @@ const validateMember = (data) => {
     password: passwordComplexity(complexityOptions)
       .required()
       .label("ไม่มีข้อมูลรหัสผ่าน"),
+    new_address: Joi.object({
+      new_subdistrict: Joi.string()
+        .required()
+        .label("กรุณากรอกที่อยู่ เเขวน ตำบล"),
+      new_district: Joi.string().required().label("กรุณากรอกเขต"),
+      new_province: Joi.string().required().label("กรุณากรอกจังหวัด"),
+      new_postcode: Joi.string().required().label("กรุณากรอกรหัสไปรษณีย์"),
+    }),
     address: Joi.string().required().label("กรุณากรอกที่อยู่"),
     subdistrict: Joi.string().required().label("กรุณากรอก ที่อยู่ เเขวน ตำบล"),
     district: Joi.string().required().label("กรุณากรอก เขต"),
