@@ -187,6 +187,13 @@ exports.create = async (req, res) => {
           ...req.body,
           card_number: card_number,
           password: hashPassword,
+          new_address:{
+            new_address:req.body.new_address , //ที่อยู่
+            new_subdistrict:req.body.new_subdistrict, //ที่อยู่ เเขวน ตำบล
+            new_district:req.body.new_district , //เขต
+            new_province:req.body.new_province , //จังหวัด
+            new_postcode:req.body.new_postcode , //รหัสไปรษณีย์
+          },
           upline: upline,
         };
       } else {

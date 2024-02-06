@@ -22,6 +22,13 @@ const MemberSchema = new mongoose.Schema({
   district: { type: String, required: false }, //เขต
   province: { type: String, required: false }, //จังหวัด
   postcode: { type: String, required: false }, //รหัสไปรษณีย์
+  new_address: {
+    new_address: { type: String, required: false, default: "-" }, //ที่อยู่
+    new_subdistrict: { type: String, required: false, default: "-" }, //ที่อยู่ เเขวน ตำบล
+    new_district: { type: String, required: false, default: "-" }, //เขต
+    new_province: { type: String, required: false, default: "-" }, //จังหวัด
+    new_postcode: { type: String, required: false, default: "-" }, //รหัสไปรษณีย์
+  }, //ที่อยู่
   wallet: { type: Number, required: false, default: 0 }, //ยอดเงินในประเป๋าอิเล็กทรอนิกส์
   money: { type: Number, required: false, default: 0 }, //ยอดรายได้สะสม
   passcode: { type: Number, required: false, default: "" },
