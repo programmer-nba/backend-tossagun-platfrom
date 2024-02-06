@@ -188,6 +188,7 @@ exports.create = async (req, res) => {
           card_number: card_number,
           password: hashPassword,
           new_address: {
+            new_sub_address:req.body.new_address.new_sub_address,
             new_subdistrict: req.body.new_address.new_subdistrict,
             new_district: req.body.new_address.new_district,
             new_province: req.body.new_address.new_province,
