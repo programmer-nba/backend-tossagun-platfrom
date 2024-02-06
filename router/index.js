@@ -49,6 +49,7 @@ router.post("/login", async (req, res) => {
     const responseData = {
       _id: members._id,
       name: members.name,
+      lastname:members.lastname,
       address: members.address,
       tel: members.tel,
     };
@@ -91,6 +92,7 @@ router.post("/me", authMe, async (req, res) => {
       } else {
         return res.status(200).send({
           name: members.name,
+          lastname:members.lastname,
           username: members.tel,
         });
       }

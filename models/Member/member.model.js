@@ -16,6 +16,7 @@ const MemberSchema = new mongoose.Schema({
   card_number: { type: String, required: false }, //รหัสสมาชิก
   name: { type: String, required: false }, //ชื่อ
   lastname: { type: String, required: false }, //นามสกุล
+  id_card: { type: String, required: false }, //บัตรประชาชน
   tel: { type: String, required: false }, //เบอร์โทร
   password: { type: String, required: false }, //รหัสผ่าน
   address: { type: String, required: false }, //ที่อยู่
