@@ -80,6 +80,7 @@ const validateMember = (data) => {
       .required()
       .label("ไม่มีข้อมูลรหัสผ่าน"),
     new_address: Joi.object({
+      new_sub_address: Joi.string().required().label("กรุณากรอกที่อยู่"),
       new_subdistrict: Joi.string()
         .required()
         .label("กรุณากรอกที่อยู่ เเขวน ตำบล"),
