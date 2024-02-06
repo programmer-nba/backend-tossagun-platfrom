@@ -15,6 +15,7 @@ const complexityOptions = {
 const MemberSchema = new mongoose.Schema({
   card_number: { type: String, required: false }, //รหัสสมาชิก
   name: { type: String, required: false }, //ชื่อ
+  lastname: { type: String, required: false }, //นามสกุล
   tel: { type: String, required: false }, //เบอร์โทร
   password: { type: String, required: false }, //รหัสผ่าน
   address: { type: String, required: false }, //ที่อยู่
@@ -23,11 +24,10 @@ const MemberSchema = new mongoose.Schema({
   province: { type: String, required: false }, //จังหวัด
   postcode: { type: String, required: false }, //รหัสไปรษณีย์
   new_address: {
-    new_address: { type: String, required: false, default: "-" }, //ที่อยู่
-    new_subdistrict: { type: String, required: false, default: "-" }, //ที่อยู่ เเขวน ตำบล
-    new_district: { type: String, required: false, default: "-" }, //เขต
-    new_province: { type: String, required: false, default: "-" }, //จังหวัด
-    new_postcode: { type: String, required: false, default: "-" }, //รหัสไปรษณีย์
+    new_subdistrict: { type: String, required: false, default: "" }, //ที่อยู่ เเขวน ตำบล
+    new_district: { type: String, required: false, default: "" }, //เขต
+    new_province: { type: String, required: false, default: "" }, //จังหวัด
+    new_postcode: { type: String, required: false, default: "" }, //รหัสไปรษณีย์
   }, //ที่อยู่
   wallet: { type: Number, required: false, default: 0 }, //ยอดเงินในประเป๋าอิเล็กทรอนิกส์
   money: { type: Number, required: false, default: 0 }, //ยอดรายได้สะสม
@@ -73,6 +73,7 @@ const Member = mongoose.model("Member", MemberSchema);
 const validateMember = (data) => {
   const schema = Joi.object({
     name: Joi.string().required().label("กรุณากรอกชื่อ"),
+    lastname: Joi.string().required().label("กรุณากรอกนามสกุล"),
     tel: Joi.string().required().label("กรุณากรอกเบอร์โทร"),
     password: passwordComplexity(complexityOptions)
       .required()

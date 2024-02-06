@@ -136,7 +136,7 @@ exports.check = async (req, res) => {
 exports.CheckInvit = async (req, res) => {
   try {
     const tels = req.params.tel;
-    console.log(tels)
+    console.log(tels);
     const member = await Member.findOne({ tel: tels });
     if (member) {
       return res.status(200).send({
@@ -164,11 +164,11 @@ exports.create = async (req, res) => {
         .status(400)
         .send({ message: error.details[0].message, status: false });
     }
-    const checkTel = await Member.findOne({tel: req.body.tel});
+    const checkTel = await Member.findOne({ tel: req.body.tel });
     if (checkTel) {
       return res
         .status(400)
-        .send({status: false, message: "เบอร์โทรศัพท์เป็นสมาชิกอยู่แล้ว"});
+        .send({ status: false, message: "เบอร์โทรศัพท์เป็นสมาชิกอยู่แล้ว" });
     }
     const card_number = `888${req.body.tel}`;
     const salt = await bcrypt.genSalt(Number(process.env.SALT));
@@ -187,12 +187,12 @@ exports.create = async (req, res) => {
           ...req.body,
           card_number: card_number,
           password: hashPassword,
-          new_address:{
-            new_address:req.body.new_address , //ที่อยู่
-            new_subdistrict:req.body.new_subdistrict, //ที่อยู่ เเขวน ตำบล
-            new_district:req.body.new_district , //เขต
-            new_province:req.body.new_province , //จังหวัด
-            new_postcode:req.body.new_postcode , //รหัสไปรษณีย์
+          new_address: {
+            new_address: req.body.new_address, //ที่อยู่
+            new_subdistrict: req.body.new_subdistrict, //ที่อยู่ เเขวน ตำบล
+            new_district: req.body.new_district, //เขต
+            new_province: req.body.new_province, //จังหวัด
+            new_postcode: req.body.new_postcode, //รหัสไปรษณีย์
           },
           upline: upline,
         };
