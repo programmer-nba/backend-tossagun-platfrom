@@ -9,6 +9,7 @@ router.post("/create", member.create); //สร้าง user
 router.post("/checkForgotPassword/:id", member.checkForgotPassword); //ส่ง otp ยืนยันว่าลืมรหัสผ่าน
 router.post("/change_password", member.ChangePassword); //เปลี่ยนรหัสผ่าน
 router.put("/EditMember/:id", member.EditMember); //เเก้ไขข้อมูลสมาชิก
+router.put("/EditMemberNew/:id", member.EditMemberNew)//เเก้ไขข้อมูลปัจจุบัน
 router.put("/ImportBank/:id", member.ImportBank); //เพิ่มข้อมูลธนาคาร
 router.put("/ImportIden/:id", member.ImportIden); //เพิ่มข้อมูลบัตรประชาชน
 router.put("/ImportProfile/:id", member.ImportProfile); //เพิ่มรูปภาพprofile

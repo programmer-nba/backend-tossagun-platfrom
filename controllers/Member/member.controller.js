@@ -188,7 +188,7 @@ exports.create = async (req, res) => {
           card_number: card_number,
           password: hashPassword,
           new_address: {
-            new_sub_address:req.body.new_address.new_sub_address,
+            new_sub_address: req.body.new_address.new_sub_address,
             new_subdistrict: req.body.new_address.new_subdistrict,
             new_district: req.body.new_address.new_district,
             new_province: req.body.new_address.new_province,
@@ -385,6 +385,42 @@ exports.EditMember = async (req, res) => {
   } catch (error) {
     return res.status(500).send({ status: false, error: error.message });
   }
+};
+exports.EditMemberNew = async (req, res) => {
+  try {
+    const id = req.params.id;
+    if (id && !req.body.password) {
+      const updatedMember = await Member.findByIdAndUpdate(
+        id,
+        {
+          $set: {
+            "new_address.new_sub_address": req.body.new_address.new_sub_address,
+            "new_address.new_subdistrict": req.body.new_address.new_subdistrict,
+            "new_address.new_district": req.body.new_address.new_district,
+            "new_address.new_province": req.body.new_address.new_province,
+            "new_address.new_postcode": req.body.new_address.new_postcode,
+          },
+        },
+        { new: true }
+      );
+  
+      if (updatedMember) {
+        return res.status(200).send({
+          message: "แก้ไขข้อมูลสำเร็จ",
+          status: true,
+          data: updatedMember,
+        });
+      } else {
+        return res.status(500).send({
+          message: "ไม่สามารถแก้ไขข้อมูลได้",
+          status: false,
+        });
+      }
+    }
+  } catch (error) {
+    return res.status(500).send({ status: false, error: error.message });
+  }
+  
 };
 exports.ImportProfile = async (req, res) => {
   try {
