@@ -392,6 +392,7 @@ exports.EditMemberNew = async (req, res) => {
     if (id && !req.body.password) {
       const updatedMember = await Member.findByIdAndUpdate(
         id,
+        
         {
           $set: {
             "new_address.new_sub_address": req.body.new_address.new_sub_address,
@@ -403,7 +404,7 @@ exports.EditMemberNew = async (req, res) => {
         },
         { new: true }
       );
-  
+
       if (updatedMember) {
         return res.status(200).send({
           message: "แก้ไขข้อมูลสำเร็จ",
@@ -420,7 +421,6 @@ exports.EditMemberNew = async (req, res) => {
   } catch (error) {
     return res.status(500).send({ status: false, error: error.message });
   }
-  
 };
 exports.ImportProfile = async (req, res) => {
   try {
