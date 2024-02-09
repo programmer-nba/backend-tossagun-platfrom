@@ -15,6 +15,6 @@ router.put("/ImportIden/:id", authMember, member.ImportIden); //เพิ่ม�
 router.put("/ImportProfile/:id", authMember, member.ImportProfile); //เพิ่มรูปภาพprofile
 router.delete("/deleteMember/:id", authMember, member.deleteMember);
 router.get("/GetAllMember", member.GetAllMember);
-router.get("/GetMember/:id",authMember, member.GetMemberById);
+router.get("/GetMember/:id", authMember, member.GetMemberById);
 
 module.exports = router;
