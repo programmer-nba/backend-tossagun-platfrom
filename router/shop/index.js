@@ -5,7 +5,7 @@ const authShop = require("../../lib/auth-shop")
 
 router.post("/genPublicToken",member.genPublicToken)
 router.post("/regisMember",authShop,member.create)
-router.get("/memberShop", authShop,member.CheckInvit)
+router.get("/memberShop/:tel", authShop,member.CheckInvit)
 
 
 module.exports = router;
