@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt");
 const dayjs = require("dayjs");
-require('dotenv').config();
+require("dotenv").config();
 const Joi = require("joi");
 const { google } = require("googleapis");
 const { default: axios } = require("axios");
@@ -393,7 +393,7 @@ exports.EditMemberNew = async (req, res) => {
     if (id && !req.body.password) {
       const updatedMember = await Member.findByIdAndUpdate(
         id,
-        
+
         {
           $set: {
             "new_address.new_sub_address": req.body.new_address.new_sub_address,
@@ -605,24 +605,22 @@ exports.GetMemberById = async (req, res) => {
   }
 };
 
-
-
 //สร้างtoken
 exports.genPublicToken = async (req, res) => {
   try {
     const token = jwt.sign(
-      {code: "Shop", name: "shop", key: "shop_tossagun"},
+      { code: "Shop", name: "shop", key: "shop_tossagun" },
       process.env.TOKEN_KEY
     );
     if (token) {
-      return res.status(200).send({status: true, token: token});
+      return res.status(200).send({ status: true, token: token });
     } else {
       return res
         .status(400)
-        .send({status: false, message: "สร้าง Token ไม่สำเร็จ"});
+        .send({ status: false, message: "สร้าง Token ไม่สำเร็จ" });
     }
   } catch (err) {
     console.log(err);
-    return res.status(500).send({message: err.message});
+    return res.status(500).send({ message: err.message });
   }
 };
