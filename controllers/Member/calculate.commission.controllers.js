@@ -10,7 +10,7 @@ const { numberDigitFormat } = require("../../lib/format_function");
 const validate_commission = (data) => {
   const schema = Joi.object({
     invoice: Joi.string().required().label("ไม่พบเลขที่ใบเสร็จ"),
-    tel: Joi.string().required().label("ไม่พบเบอร์ผู้ของผู้ใช้ platform"),
+    tel: Joi.string().required().label("ไม่พบเบอร์ของผู้ใช้ platform"),
     platform: {
       owner: Joi.number().required().label("ไม่พบไม่ได้ของบัญชีที่รับเอง"),
       lv1: Joi.number().required().label("ไม่พบรายได้ชั้นที่ 1"),
