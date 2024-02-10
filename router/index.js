@@ -91,14 +91,32 @@ router.post("/me", authMe, async (req, res) => {
           .send({ message: "มีบางอย่างผิดพลาด", status: false });
       } else {
         return res.status(200).send({
+          card_number:members.card_number,
           name: members.name,
+          id_card:members.id_card,
+          tel:members.tel,
           lastname:members.lastname,
           username: members.tel,
+          address:members.address,
+          subdistrict: members.subdistrict,
+          district: members.district,
+          province: members.province,
+          postcode: members.postcode,
+          new_address:members.new_address,
+          wallet:members.wallet,
+          money: members.money,
+          passcode: members.passcode,
+          Member_pin: members.Member_pin,
+          profile_image:members.profile_image,
+          allsale: members.allsale,
+          happy_point: members.happy_point,
+          bank:members.bank,
+          iden:members.upline
         });
       }
     }
   } catch (error) {
-    res.status(500).send({ message: err.message, status: false });
+    res.status(500).send({ message: error.message, status: false });
   }
 });
 
