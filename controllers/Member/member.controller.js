@@ -174,6 +174,7 @@ exports.create = async (req, res) => {
     const card_number = `888${req.body.tel}`;
     const salt = await bcrypt.genSalt(Number(process.env.SALT));
     const hashPassword = await bcrypt.hash(req.body.password, salt);
+    let data;
     if (req.body.ref_tel) {
       const memberRef = await Member.findOne({
         tel: req.body.ref_tel,
@@ -632,13 +633,11 @@ exports.GetTeamMember = async (req, res) => {
         .send({message: "เบอร์โทรนี้ยังไม่ได้เป็นสมาชิกของ Tossagun Platfrom"});
     } else {
       const upline = [member.upline.lv1, member.upline.lv2, member.upline.lv3];
-      console.log("upline", upline);
       const validUplines = upline.filter((item) => item !== "-");
       const uplineData = [];
       let i = 0;
       for (const item of validUplines) {
         const include = await Member.findOne({_id: item});
-        console.log("include", include);
         if (include !== null) {
           uplineData.push({
             iden: include.iden.number,
@@ -656,7 +655,6 @@ exports.GetTeamMember = async (req, res) => {
           i++;
         }
       }
-
       const owner = {
         iden: member.iden.number,
         name: member.name,
@@ -670,7 +668,6 @@ exports.GetTeamMember = async (req, res) => {
         tel: member.tel,
         level: "owner",
       };
-
       return res.status(200).send({
         message: "ดึงข้อมูลสำเร็จ",
         data: [
