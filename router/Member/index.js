@@ -7,7 +7,7 @@ router.post("/check", member.check); //ตรวจสอบ otp
 router.get("/CheckInvite/:tel", member.CheckInvit); //ตรวจสอบผู้เชิญชวน
 router.post("/create", member.create); //สร้าง user
 router.post("/checkForgotPassword/:id", member.checkForgotPassword); //ส่ง otp ยืนยันว่าลืมรหัสผ่าน
-router.post("/change_password", authMember, member.ChangePassword); //เปลี่ยนรหัสผ่าน
+router.post("/change_password", member.ChangePassword); //เปลี่ยนรหัสผ่าน
 router.put("/EditMember/:id", authMember, member.EditMember); //เเก้ไขข้อมูลสมาชิก
 router.put("/EditMemberNew/:id", authMember, member.EditMemberNew); //เเก้ไขข้อมูลปัจจุบัน
 router.put("/ImportBank/:id", authMember, member.ImportBank); //เพิ่มข้อมูลธนาคาร
