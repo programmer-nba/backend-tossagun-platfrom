@@ -111,7 +111,7 @@ router.post("/me", authMe, async (req, res) => {
           allsale: members.allsale,
           happy_point: members.happy_point,
           bank:members.bank,
-          iden:members.upline,
+          iden:members.iden,
           heritage:members.heritage
         });
       }
