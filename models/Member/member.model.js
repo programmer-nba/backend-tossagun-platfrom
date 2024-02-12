@@ -56,6 +56,21 @@ const MemberSchema = new mongoose.Schema({
     lv2: { type: String, required: false, default: "-" },
     lv3: { type: String, required: false, default: "-" },
   },
+  heritage: {
+    //มรดกตกทอด
+    lv1: {
+      name: { type: String, required: false, default: "-" },
+      percent: { type: Number, required: false, default: 0 },
+    },
+    lv2: {
+      name: { type: String, required: false, default: "-" },
+      percent: { type: Number, required: false, default: 0 },
+    },
+    lv3: {
+      name: { type: String, required: false, default: "-" },
+      percent: { type: Number, required: false, default: 0 },
+    },
+  },
   timmestamp: { type: Date, required: false, default: Date.now() },
   status: { type: Boolean, required: false, default: true },
 });
