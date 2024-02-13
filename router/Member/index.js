@@ -17,9 +17,8 @@ router.delete("/deleteMember/:id", authMember, member.deleteMember);
 router.get("/GetAllMember", member.GetAllMember);
 router.get("/GetMember/:id", authMember, member.GetMemberById);
 
-
 //เเก้ไขข้อมุลมรดกตกทอด
-router.put("/EditHeritage/:id" , authMember, member.EditHeritage)
-router.put("/DeleteHeriyage/:id" , authMember, member.DeleteHeriyage)
+router.put("/EditHeritage/:id", authMember, member.EditHeritage);
+router.put("/DeleteHeriyage/:id", authMember, member.DeleteHeriyage);
 
 module.exports = router;
