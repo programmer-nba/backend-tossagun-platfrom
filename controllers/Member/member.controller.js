@@ -174,36 +174,49 @@ exports.create = async (req, res) => {
     const card_number = `888${req.body.tel}`;
     const salt = await bcrypt.genSalt(Number(process.env.SALT));
     const hashPassword = await bcrypt.hash(req.body.password, salt);
-    let data;
-    if (req.body.ref_tel) {
-      const memberRef = await Member.findOne({
-        tel: req.body.ref_tel,
-      });
-      if (memberRef) {
-        const upline = {
-          lv1: memberRef._id,
-          lv2: memberRef.upline.lv1,
-          lv3: memberRef.upline.lv2,
-        };
-        data = {
-          ...req.body,
-          card_number: card_number,
-          password: hashPassword,
-          new_address: {
-            new_sub_address: req.body.new_address.new_sub_address,
-            new_subdistrict: req.body.new_address.new_subdistrict,
-            new_district: req.body.new_address.new_district,
-            new_province: req.body.new_address.new_province,
-            new_postcode: req.body.new_address.new_postcode,
-          },
-          upline: upline,
-        };
-      } else {
-        return res.status(400).send({
-          status: false,
-          message: "ไม่พบข้อมูลผู้แนะนำเบอร์โทรที่แนะนำนี้",
-        });
-      }
+    // let data;
+    // if (req.body.ref_tel) {
+    //   const memberRef = await Member.findOne({
+    //     tel: req.body.ref_tel,
+    //   });
+    //   if (memberRef) {
+    //     const upline = {
+    //       lv1: memberRef._id,
+    //       lv2: memberRef.upline.lv1,
+    //       lv3: memberRef.upline.lv2,
+    //     };
+    //     data = {
+    //       ...req.body,
+    //       card_number: card_number,
+    //       password: hashPassword,
+    //       new_address: {
+    //         new_sub_address: req.body.new_address.new_sub_address,
+    //         new_subdistrict: req.body.new_address.new_subdistrict,
+    //         new_district: req.body.new_address.new_district,
+    //         new_province: req.body.new_address.new_province,
+    //         new_postcode: req.body.new_address.new_postcode,
+    //       },
+    //       upline: upline,
+    //     };
+    //   } else {
+    //     return res.status(400).send({
+    //       status: false,
+    //       message: "ไม่พบข้อมูลผู้แนะนำเบอร์โทรที่แนะนำนี้",
+    //     });
+    //   }
+    // }
+    const data = {
+      ...req.body,
+      card_number: card_number,
+      password: hashPassword,
+      new_address: {
+        new_sub_address: req.body.new_address.new_sub_address,
+        new_subdistrict: req.body.new_address.new_subdistrict,
+        new_district: req.body.new_address.new_district,
+        new_province: req.body.new_address.new_province,
+        new_postcode: req.body.new_address.new_postcode,
+      },
+      // upline: upline,
     }
     const add = await Member.create(data);
     return res.status(200).send({

@@ -14,10 +14,10 @@ const prefix = "/tossagun-platform";
 
 app.use(prefix + "/", require("./router"));
 app.use(prefix + "/Member", require("./router/Member/index"));
-app.use(prefix + "/Shop", require("./router/shop/index"))
+app.use(prefix + "/Shop", require("./router/shop/index"));
 app.use(prefix + "/commistion", require("./router/Member/commission"));
 
-app.use(prefix + "/contract" , require("./router/contract/index"))
+app.use(prefix + "/contract", require("./router/contract/index"))
 
 app.use(prefix + "/history", require("./router/history/index"));
 const port = process.env.PORT || 9998;
