@@ -2,13 +2,13 @@ const bcrypt = require("bcrypt");
 const dayjs = require("dayjs");
 require("dotenv").config();
 const Joi = require("joi");
-const {google} = require("googleapis");
-const {default: axios} = require("axios");
+const { google } = require("googleapis");
+const { default: axios } = require("axios");
 const req = require("express/lib/request.js");
 const token_decode = require("../../lib/token_decode");
 const multer = require("multer");
 const jwt = require("jsonwebtoken");
-const {Member, validateMember} = require("../../models/Member/member.model");
+const { Member, validateMember } = require("../../models/Member/member.model");
 const storage = multer.diskStorage({
   filename: function (req, file, cb) {
     cb(null, Date.now() + "-" + file.originalname);
@@ -19,7 +19,7 @@ const {
   uploadFileCreate,
   deleteFile,
 } = require("../../funtions/uploadfilecreate");
-const {dfareporting} = require("googleapis/build/src/apis/dfareporting");
+const { dfareporting } = require("googleapis/build/src/apis/dfareporting");
 
 //ส่ง OTP
 exports.verify = async (req, res) => {
@@ -30,11 +30,11 @@ exports.verify = async (req, res) => {
       });
       return schema.validate(data);
     };
-    const {error} = vali(req.body);
+    const { error } = vali(req.body);
     if (error) {
       return res
         .status(400)
-        .send({status: false, message: error.details[0].message});
+        .send({ status: false, message: error.details[0].message });
     }
     const config = {
       method: "post",
@@ -54,9 +54,9 @@ exports.verify = async (req, res) => {
         if (result.data.code === "000") {
           return res
             .status(200)
-            .send({status: true, result: result.data.result});
+            .send({ status: true, result: result.data.result });
         } else {
-          return res.status(400).send({status: false, ...result.data});
+          return res.status(400).send({ status: false, ...result.data });
         }
       })
       .catch((err) => {
@@ -65,7 +65,7 @@ exports.verify = async (req, res) => {
       });
   } catch (err) {
     console.log(err);
-    return res.status(500).send({message: "มีบางอย่างผิดพลาด"});
+    return res.status(500).send({ message: "มีบางอย่างผิดพลาด" });
   }
 };
 //ตรวจสอบ OTP
@@ -78,11 +78,11 @@ exports.check = async (req, res) => {
       });
       return schema.validate(data);
     };
-    const {error} = vali(req.body);
+    const { error } = vali(req.body);
     if (error) {
       return res
         .status(400)
-        .send({status: false, message: error.details[0].message});
+        .send({ status: false, message: error.details[0].message });
     }
     const config = {
       method: "post",
@@ -113,7 +113,7 @@ exports.check = async (req, res) => {
           if (response.data.result.status) {
             return res
               .status(200)
-              .send({status: true, message: "ยืนยัน OTP สำเร็จ"});
+              .send({ status: true, message: "ยืนยัน OTP สำเร็จ" });
           } else {
             return res.status(400).send({
               status: false,
@@ -121,16 +121,16 @@ exports.check = async (req, res) => {
             });
           }
         } else {
-          return res.status(400).send({status: false, ...response.data});
+          return res.status(400).send({ status: false, ...response.data });
         }
       })
       .catch(function (error) {
         console.log(error);
-        return res.status(400).send({status: false, ...error});
+        return res.status(400).send({ status: false, ...error });
       });
   } catch (err) {
     console.log(err);
-    return res.status(500).send({message: "มีบางอย่างผิดพลาด"});
+    return res.status(500).send({ message: "มีบางอย่างผิดพลาด" });
   }
 };
 //ตรวจจสอบรหัสผู้เชิญชวน
@@ -138,7 +138,7 @@ exports.CheckInvit = async (req, res) => {
   try {
     const tels = req.params.tel;
     console.log(tels);
-    const member = await Member.findOne({tel: tels});
+    const member = await Member.findOne({ tel: tels });
     if (member) {
       return res.status(200).send({
         status: true,
@@ -148,7 +148,7 @@ exports.CheckInvit = async (req, res) => {
     } else {
       return res
         .status(404)
-        .send({message: "ไม่พบข้อมูลสมาชิกผู้เเนะนำ", status: false});
+        .send({ message: "ไม่พบข้อมูลสมาชิกผู้เเนะนำ", status: false });
     }
   } catch (error) {
     res.status(500).send({
@@ -159,17 +159,17 @@ exports.CheckInvit = async (req, res) => {
 };
 exports.create = async (req, res) => {
   try {
-    const {error} = validateMember(req.body);
+    const { error } = validateMember(req.body);
     if (error) {
       return res
         .status(400)
-        .send({message: error.details[0].message, status: false});
+        .send({ message: error.details[0].message, status: false });
     }
-    const checkTel = await Member.findOne({tel: req.body.tel});
+    const checkTel = await Member.findOne({ tel: req.body.tel });
     if (checkTel) {
       return res
         .status(400)
-        .send({status: false, message: "เบอร์โทรศัพท์เป็นสมาชิกอยู่แล้ว"});
+        .send({ status: false, message: "เบอร์โทรศัพท์เป็นสมาชิกอยู่แล้ว" });
     }
     const card_number = `888${req.body.tel}`;
     const salt = await bcrypt.genSalt(Number(process.env.SALT));
@@ -212,7 +212,7 @@ exports.create = async (req, res) => {
       data: add,
     });
   } catch (error) {
-    return res.status(500).send({status: false, error: error.message});
+    return res.status(500).send({ status: false, error: error.message });
   }
 };
 //ลืมรหัสผ่าน ตรวจสอบ sms otp สำหรับเพื่อแก้ไขรหัสผ่าน
@@ -226,11 +226,11 @@ exports.checkForgotPassword = async (req, res) => {
       });
       return schema.validate(data);
     };
-    const {error} = vali(req.body);
+    const { error } = vali(req.body);
     if (error) {
       return res
         .status(400)
-        .send({status: false, message: error.details[0].message});
+        .send({ status: false, message: error.details[0].message });
     }
     const config = {
       method: "post",
@@ -258,13 +258,13 @@ exports.checkForgotPassword = async (req, res) => {
         if (response.data.code === "000") {
           //ตรวจสอบ OTP
           if (response.data.result.status) {
-            const member = await Member.findOne({tel: req.body.tel});
+            const member = await Member.findOne({ tel: req.body.tel });
             if (member) {
               console.log("ยืนยันสำเร็จ");
               const token = jwt.sign(
-                {_id: member._id},
+                { _id: member._id },
                 `${process.env.TOKEN_KEY}`,
-                {expiresIn: "10m"}
+                { expiresIn: "10m" }
               );
               return res.status(200).send({
                 status: true,
@@ -275,7 +275,7 @@ exports.checkForgotPassword = async (req, res) => {
               console.log("ยืนยันไม่สำเร็จ");
               return res
                 .status(200)
-                .send({status: false, message: "ไม่พบเบอร์โทรนี้ในระบบ"});
+                .send({ status: false, message: "ไม่พบเบอร์โทรนี้ในระบบ" });
             }
           } else {
             return res.status(400).send({
@@ -284,16 +284,16 @@ exports.checkForgotPassword = async (req, res) => {
             });
           }
         } else {
-          return res.status(400).send({status: false, ...response.data});
+          return res.status(400).send({ status: false, ...response.data });
         }
       })
       .catch(function (error) {
         console.log(error);
-        return res.status(400).send({status: false, ...error});
+        return res.status(400).send({ status: false, ...error });
       });
   } catch (err) {
     console.log(err);
-    return res.status(500).send({message: "มีบางอย่างผิดพลาด"});
+    return res.status(500).send({ message: "มีบางอย่างผิดพลาด" });
   }
 };
 exports.ChangePassword = async (req, res) => {
@@ -304,11 +304,11 @@ exports.ChangePassword = async (req, res) => {
       });
       return schema.validate(data);
     };
-    const {error} = vali(req.body);
+    const { error } = vali(req.body);
     if (error) {
       return res
         .status(400)
-        .send({status: false, message: error.details[0].message});
+        .send({ status: false, message: error.details[0].message });
     }
     const decode = token_decode(req.headers["auth-token"]);
     const encrytedPassword = await bcrypt.hash(req.body.password, 10);
@@ -318,20 +318,20 @@ exports.ChangePassword = async (req, res) => {
     if (member) {
       return res
         .status(200)
-        .send({status: true, message: "เปลี่ยนรหัสผ่านสำเร็จ"});
+        .send({ status: true, message: "เปลี่ยนรหัสผ่านสำเร็จ" });
     } else {
       return res
         .status(400)
-        .send({status: false, message: "เปลี่ยนรหัสผ่านไม่สำเร็จ"});
+        .send({ status: false, message: "เปลี่ยนรหัสผ่านไม่สำเร็จ" });
     }
   } catch (err) {
     console.log(err);
-    return res.status(500).send({message: "มีบางอย่างผิดพลาด"});
+    return res.status(500).send({ message: "มีบางอย่างผิดพลาด" });
   }
 };
 exports.EditMember = async (req, res) => {
   try {
-    let upload = multer({storage: storage}).array("imgCollection", 20);
+    let upload = multer({ storage: storage }).array("imgCollection", 20);
     upload(req, res, async function (err) {
       const reqFiles = [];
       const result = [];
@@ -342,7 +342,7 @@ exports.EditMember = async (req, res) => {
       if (req.files) {
         const url = req.protocol + "://" + req.get("host");
         for (var i = 0; i < req.files.length; i++) {
-          const src = await uploadFileCreate(req.files, res, {i, reqFiles});
+          const src = await uploadFileCreate(req.files, res, { i, reqFiles });
           result.push(src);
         }
         profile_image = reqFiles[0];
@@ -376,16 +376,16 @@ exports.EditMember = async (req, res) => {
         if (member) {
           return res
             .status(200)
-            .send({message: "แก้ไขผู้ใช้งานนี้เรียบร้อยเเล้ว", status: true});
+            .send({ message: "แก้ไขผู้ใช้งานนี้เรียบร้อยเเล้ว", status: true });
         } else {
           return res
             .status(500)
-            .send({message: "ไม่สามารถเเก้ไขผู้ใช้งานนี้ได้", status: false});
+            .send({ message: "ไม่สามารถเเก้ไขผู้ใช้งานนี้ได้", status: false });
         }
       }
     });
   } catch (error) {
-    return res.status(500).send({status: false, error: error.message});
+    return res.status(500).send({ status: false, error: error.message });
   }
 };
 exports.EditMemberNew = async (req, res) => {
@@ -404,7 +404,7 @@ exports.EditMemberNew = async (req, res) => {
             "new_address.new_postcode": req.body.new_address.new_postcode,
           },
         },
-        {new: true}
+        { new: true }
       );
 
       if (updatedMember) {
@@ -421,12 +421,12 @@ exports.EditMemberNew = async (req, res) => {
       }
     }
   } catch (error) {
-    return res.status(500).send({status: false, error: error.message});
+    return res.status(500).send({ status: false, error: error.message });
   }
 };
 exports.ImportProfile = async (req, res) => {
   try {
-    let upload = multer({storage: storage}).array("imgCollection", 20);
+    let upload = multer({ storage: storage }).array("imgCollection", 20);
     upload(req, res, async function (err) {
       const reqFiles = [];
       const result = [];
@@ -436,7 +436,7 @@ exports.ImportProfile = async (req, res) => {
       if (req.files) {
         const url = req.protocol + "://" + req.get("host");
         for (var i = 0; i < req.files.length; i++) {
-          const src = await uploadFileCreate(req.files, res, {i, reqFiles});
+          const src = await uploadFileCreate(req.files, res, { i, reqFiles });
           result.push(src);
         }
       }
@@ -460,12 +460,12 @@ exports.ImportProfile = async (req, res) => {
       }
     });
   } catch (error) {
-    return res.status(500).send({status: false, error: error.message});
+    return res.status(500).send({ status: false, error: error.message });
   }
 };
 exports.ImportBank = async (req, res) => {
   try {
-    let upload = multer({storage: storage}).array("imgCollection", 20);
+    let upload = multer({ storage: storage }).array("imgCollection", 20);
     upload(req, res, async function (err) {
       const reqFiles = [];
       const result = [];
@@ -475,7 +475,7 @@ exports.ImportBank = async (req, res) => {
       if (req.files) {
         const url = req.protocol + "://" + req.get("host");
         for (var i = 0; i < req.files.length; i++) {
-          const src = await uploadFileCreate(req.files, res, {i, reqFiles});
+          const src = await uploadFileCreate(req.files, res, { i, reqFiles });
           result.push(src);
         }
       }
@@ -500,12 +500,12 @@ exports.ImportBank = async (req, res) => {
       }
     });
   } catch (error) {
-    return res.status(500).send({status: false, error: error.message});
+    return res.status(500).send({ status: false, error: error.message });
   }
 };
 exports.ImportIden = async (req, res) => {
   try {
-    let upload = multer({storage: storage}).array("imgCollection", 20);
+    let upload = multer({ storage: storage }).array("imgCollection", 20);
     upload(req, res, async function (err) {
       const reqFiles = [];
       const result = [];
@@ -515,7 +515,7 @@ exports.ImportIden = async (req, res) => {
       if (req.files) {
         const url = req.protocol + "://" + req.get("host");
         for (var i = 0; i < req.files.length; i++) {
-          const src = await uploadFileCreate(req.files, res, {i, reqFiles});
+          const src = await uploadFileCreate(req.files, res, { i, reqFiles });
           result.push(src);
         }
       }
@@ -540,7 +540,7 @@ exports.ImportIden = async (req, res) => {
       }
     });
   } catch (error) {
-    return res.status(500).send({status: false, error: error.message});
+    return res.status(500).send({ status: false, error: error.message });
   }
 };
 exports.deleteMember = async (req, res) => {
@@ -550,30 +550,22 @@ exports.deleteMember = async (req, res) => {
     if (!member) {
       return res
         .status(404)
-        .send({status: false, message: "ไม่พบข้อมุลสมาชิก"});
+        .send({ status: false, message: "ไม่พบข้อมุลสมาชิก" });
     } else {
       return res
         .status(200)
-        .send({status: true, message: "ลบข้อมูลสมาชิกสำเร็จ"});
+        .send({ status: true, message: "ลบข้อมูลสมาชิกสำเร็จ" });
     }
   } catch (err) {
-    return res.status(500).send({status: false, message: "มีบางอย่างผิดพลาด"});
+    return res.status(500).send({ status: false, message: "มีบางอย่างผิดพลาด" });
   }
 };
 exports.GetAllMember = async (req, res) => {
   try {
     const members = await Member.find();
-    if (members.length > 0) {
-      return res.status(200).send({
-        status: true,
-        message: "ดึงข้อมูลสมาชิกสำเร็จ",
-        data: members,
-      });
-    } else {
-      return res
-        .status(404)
-        .send({message: "ไม่พบข้อมูลสมาชิก", status: false});
-    }
+    if (!members)
+      return res.status(403).send({ status: false, message: "ดึงข้อมูลไม่สำเร็จ" })
+    return res.status(200).send({ status: true, message: 'ดึงข้อมูลสำเร็จ', data: members })
   } catch (error) {
     res.status(500).send({
       message: "มีบางอย่างผิดพลาด",
@@ -584,7 +576,7 @@ exports.GetAllMember = async (req, res) => {
 exports.GetMemberById = async (req, res) => {
   try {
     const id = req.params.id;
-    const member = await Member.findOne({_id: id});
+    const member = await Member.findOne({ _id: id });
     if (member) {
       return res.status(200).send({
         status: true,
@@ -594,7 +586,7 @@ exports.GetMemberById = async (req, res) => {
     } else {
       return res
         .status(404)
-        .send({message: "ไม่พบข้อมูลสมาชิก", status: false});
+        .send({ message: "ไม่พบข้อมูลสมาชิก", status: false });
     }
   } catch (error) {
     res.status(500).send({
@@ -608,36 +600,36 @@ exports.GetMemberById = async (req, res) => {
 exports.genPublicToken = async (req, res) => {
   try {
     const token = jwt.sign(
-      {code: "Shop", name: "shop", key: "shop_tossagun"},
+      { code: "Shop", name: "shop", key: "shop_tossagun" },
       process.env.TOKEN_KEY
     );
     if (token) {
-      return res.status(200).send({status: true, token: token});
+      return res.status(200).send({ status: true, token: token });
     } else {
       return res
         .status(400)
-        .send({status: false, message: "สร้าง Token ไม่สำเร็จ"});
+        .send({ status: false, message: "สร้าง Token ไม่สำเร็จ" });
     }
   } catch (err) {
     console.log(err);
-    return res.status(500).send({message: err.message});
+    return res.status(500).send({ message: err.message });
   }
 };
 
 exports.GetTeamMember = async (req, res) => {
   try {
-    const member = await Member.findOne({tel: req.params.tel});
+    const member = await Member.findOne({ tel: req.params.tel });
     if (!member) {
       return res
         .status(403)
-        .send({message: "เบอร์โทรนี้ยังไม่ได้เป็นสมาชิกของ Tossagun Platfrom"});
+        .send({ message: "เบอร์โทรนี้ยังไม่ได้เป็นสมาชิกของ Tossagun Platfrom" });
     } else {
       const upline = [member.upline.lv1, member.upline.lv2, member.upline.lv3];
       const validUplines = upline.filter((item) => item !== "-");
       const uplineData = [];
       let i = 0;
       for (const item of validUplines) {
-        const include = await Member.findOne({_id: item});
+        const include = await Member.findOne({ _id: item });
         if (include !== null) {
           uplineData.push({
             iden: include.iden.number,
@@ -679,7 +671,7 @@ exports.GetTeamMember = async (req, res) => {
       });
     }
   } catch (err) {
-    return res.status(500).send({status: false, message: "มีบางอย่างผิดพลาด"});
+    return res.status(500).send({ status: false, message: "มีบางอย่างผิดพลาด" });
   }
 };
 
@@ -700,7 +692,7 @@ exports.EditHeritage = async (req, res) => {
             "heritage.lv3.percent": req.body.heritage.lv3.percent || 0,
           },
         },
-        {new: true}
+        { new: true }
       );
 
       if (updatedMember) {
@@ -717,7 +709,7 @@ exports.EditHeritage = async (req, res) => {
       }
     }
   } catch (error) {
-    return res.status(500).send({status: false, error: error.message});
+    return res.status(500).send({ status: false, error: error.message });
   }
 };
 exports.DeleteHeriyage = async (req, res) => {
@@ -741,7 +733,7 @@ exports.DeleteHeriyage = async (req, res) => {
         {
           $set: updateFields,
         },
-        {new: true}
+        { new: true }
       );
 
       if (updatedMember) {
@@ -758,6 +750,6 @@ exports.DeleteHeriyage = async (req, res) => {
       }
     }
   } catch (error) {
-    return res.status(500).send({status: false, error: error.message});
+    return res.status(500).send({ status: false, error: error.message });
   }
 };

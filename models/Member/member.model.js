@@ -14,16 +14,16 @@ const complexityOptions = {
 
 const MemberSchema = new mongoose.Schema({
   card_number: { type: String, required: false }, //รหัสสมาชิก
-  name: { type: String, required: false }, //ชื่อ
-  lastname: { type: String, required: false }, //นามสกุล
-  id_card: { type: String, required: false }, //บัตรประชาชน
-  tel: { type: String, required: false }, //เบอร์โทร
-  password: { type: String, required: false }, //รหัสผ่าน
-  address: { type: String, required: false }, //ที่อยู่
-  subdistrict: { type: String, required: false }, //ที่อยู่ เเขวน ตำบล
-  district: { type: String, required: false }, //เขต
-  province: { type: String, required: false }, //จังหวัด
-  postcode: { type: String, required: false }, //รหัสไปรษณีย์
+  name: { type: String, required: true }, //ชื่อ
+  lastname: { type: String, required: true }, //นามสกุล
+  // id_card: { type: String, required: false }, //บัตรประชาชน
+  tel: { type: String, required: true }, //เบอร์โทร
+  password: { type: String, required: true }, //รหัสผ่าน
+  address: { type: String, required: true }, //ที่อยู่
+  subdistrict: { type: String, required: true }, //ที่อยู่ เเขวน ตำบล
+  district: { type: String, required: true }, //เขต
+  province: { type: String, required: true }, //จังหวัด
+  postcode: { type: String, required: true }, //รหัสไปรษณีย์
   new_address: {
     new_sub_address: { type: String, required: false, default: "-" }, //ที่อยู่
     new_subdistrict: { type: String, required: false, default: "-" }, //ที่อยู่ เเขวน ตำบล
