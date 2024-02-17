@@ -79,7 +79,7 @@ router.post("/history", async (req, res) => {
   }
 });
 
-router.post("/me", authMe, async (req, res) => {
+router.get("/me", authMe, async (req, res) => {
   try {
     const { decoded } = req;
     if (decoded && decoded.row === "member") {
