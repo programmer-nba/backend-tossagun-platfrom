@@ -36,20 +36,20 @@ router.post("/login", async (req, res) => {
     }
     members.lastLogin = Date.now();
     const historyData = {
-      name: members.name,  
+      name: members.name,
       lastLogin: currentTime,
       MacAddress: macAddress,
-      ipAdress: IpAddress, 
+      ipAdress: IpAddress,
       status: true,
     };
     const history = new History(historyData);
     await history.save();
-    await members.save(); 
+    await members.save();
     const token = members.generateAuthToken();
     const responseData = {
       _id: members._id,
       name: members.name,
-      lastname:members.lastname,
+      lastname: members.lastname,
       address: members.address,
       tel: members.tel,
     };
@@ -90,30 +90,31 @@ router.post("/me", authMe, async (req, res) => {
           .status(400)
           .send({ message: "มีบางอย่างผิดพลาด", status: false });
       } else {
-        return res.status(200).send({
-          card_number:members.card_number,
-          name: members.name,
-          id_card:members.id_card,
-          tel:members.tel,
-          lastname:members.lastname,
-          username: members.tel,
-          address:members.address,
-          subdistrict: members.subdistrict,
-          district: members.district,
-          province: members.province,
-          postcode: members.postcode,
-          new_address:members.new_address,
-          wallet:members.wallet,
-          money: members.money,
-          passcode: members.passcode,
-          Member_pin: members.Member_pin,
-          profile_image:members.profile_image,
-          allsale: members.allsale,
-          happy_point: members.happy_point,
-          bank:members.bank,
-          iden:members.iden,
-          heritage:members.heritage
-        });
+        return res.status(200).send({ status: true, message: "ดึงข้อมูลสำเร็จ", data: members });
+        // return res.status(200).send({
+        //   card_number: members.card_number,
+        //   name: members.name,
+        //   id_card: members.id_card,
+        //   tel: members.tel,
+        //   lastname: members.lastname,
+        //   username: members.tel,
+        //   address: members.address,
+        //   subdistrict: members.subdistrict,
+        //   district: members.district,
+        //   province: members.province,
+        //   postcode: members.postcode,
+        //   new_address: members.new_address,
+        //   wallet: members.wallet,
+        //   money: members.money,
+        //   passcode: members.passcode,
+        //   Member_pin: members.Member_pin,
+        //   profile_image: members.profile_image,
+        //   allsale: members.allsale,
+        //   happy_point: members.happy_point,
+        //   bank: members.bank,
+        //   iden: members.iden,
+        //   heritage: members.heritage
+        // });
       }
     }
   } catch (error) {
