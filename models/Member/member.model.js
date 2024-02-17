@@ -109,7 +109,7 @@ const validateMember = (data) => {
     district: Joi.string().required().label("กรุณากรอก เขต"),
     province: Joi.string().required().label("กรุณากรอก จังหวัด"),
     postcode: Joi.string().required().label("กรุณากรอก รหัสไปรษณีย์"),
-    // ref_tel: Joi.string().required().label("กรุณากรอก รหัสผู้เชิญชวน"),
+    ref_tel: Joi.string().required().label("กรุณากรอก รหัสผู้เชิญชวน"),
   });
   return schema.validate(data);
 };

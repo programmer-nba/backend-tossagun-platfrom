@@ -13,7 +13,7 @@ router.put("/EditMemberNew/:id", authMember, member.EditMemberNew); //เเก�
 router.put("/ImportBank/:id", authMember, member.ImportBank); //เพิ่มข้อมูลธนาคาร
 router.put("/ImportIden/:id", authMember, member.ImportIden); //เพิ่มข้อมูลบัตรประชาชน
 router.put("/ImportProfile/:id", authMember, member.ImportProfile); //เพิ่มรูปภาพprofile
-router.delete("/deleteMember/:id", member.deleteMember);
+router.delete("/deleteMember/:id", authMember, member.deleteMember);
 router.get("/GetAllMember", member.GetAllMember);
 router.get("/GetMember/:id", authMember, member.GetMemberById);
 
