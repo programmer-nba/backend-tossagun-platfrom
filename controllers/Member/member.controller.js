@@ -157,6 +157,7 @@ exports.CheckInvit = async (req, res) => {
     });
   }
 };
+
 exports.create = async (req, res) => {
   try {
     const { error } = validateMember(req.body);
