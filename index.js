@@ -20,5 +20,5 @@ app.use(prefix + "/commisstion", require("./router/Member/commission"));
 app.use(prefix + "/contract", require("./router/contract/index"))
 
 app.use(prefix + "/history", require("./router/history/index"));
-const port = process.env.PORT || 9998;
+const port = process.env.PORT || 9997;
 app.listen(port, console.log(`Listening on port ${port}`));
