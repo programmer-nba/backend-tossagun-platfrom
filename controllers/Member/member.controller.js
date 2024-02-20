@@ -635,7 +635,6 @@ exports.genPublicToken = async (req, res) => {
     return res.status(500).send({ message: err.message });
   }
 };
-
 exports.GetTeamMember = async (req, res) => {
   try {
     const member = await Member.findOne({ tel: req.params.tel });
@@ -694,6 +693,20 @@ exports.GetTeamMember = async (req, res) => {
     return res.status(500).send({ status: false, message: "มีบางอย่างผิดพลาด" });
   }
 };
+exports.updateCommission = async (req, res) => {
+  for (let item of req.body.data) {
+    const update_commission = await Member.findOne({ tel: item.tel });
+    update_commission.money = item.remainding_commission;
+    update_commission.allsale = item.commission_amount;
+    update_commission.save();
+    if (item.lv === 'owner') {
+      const owner = await Member.findOne({ tel: item.tel })
+      owner.happy_point = req.body.happy_point;
+      owner.save();
+    }
+  }
+  return res.status(200).send({ status: true, message: "ปรับค่าคอมมิชชั่นสำเร็จ" })
+}
 
 //เเก้ไขมรดกตกทอด
 exports.EditHeritage = async (req, res) => {

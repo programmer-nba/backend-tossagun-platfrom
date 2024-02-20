@@ -7,5 +7,6 @@ router.post("/regisMember", member.create);
 router.get("/memberShop/:tel", authShop, member.CheckInvit);
 router.get("/AllMember", authShop, member.GetAllMember);
 router.get("/memberTeam/:tel", authShop, member.GetTeamMember);
+router.put("/update", member.updateCommission);
 
 module.exports = router;

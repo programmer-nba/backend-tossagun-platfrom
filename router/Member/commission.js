@@ -1,9 +1,8 @@
 const router = require("express").Router();
-const member = require("../../controllers/Member/calculate.commission.controllers")
+const commission = require("../../controllers/Member/commission.controller.js")
+const authMember = require("../../lib/auth-member.js")
 
-router.post('/givecommission', member.giveCommission);
-router.get('/GetBYtel/:tel', member.GetBYtel)
-
-
+router.post("/token", authMember, commission.getToken);
+router.get("/list", authMember, commission.getCommissionList);
 
 module.exports = router;
