@@ -330,10 +330,12 @@ exports.ChangePassword = async (req, res) => {
         .status(400)
         .send({ status: false, message: error.details[0].message });
     }
-    const decode = token_decode(req.headers["auth-token"]);
-    const encrytedPassword = await bcrypt.hash(req.body.password, 10);
-    const member = await Member.findByIdAndUpdate(decode._id, {
-      password: encrytedPassword,
+    // const decode = token_decode(req.headers["auth-token"]);
+    // const encrytedPassword = await bcrypt.hash(req.body.password, 10);
+    const salt = await bcrypt.genSalt(Number(process.env.SALT));
+    const hashPassword = await bcrypt.hash(req.body.password, salt);
+    const member = await Member.findByIdAndUpdate(req.decode._id, {
+      password: hashPassword,
     });
     if (member) {
       return res
