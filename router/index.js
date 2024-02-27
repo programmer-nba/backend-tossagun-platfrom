@@ -122,5 +122,17 @@ router.get("/me", authMe, async (req, res) => {
   }
 });
 
+router.post("/referral_code", authMe, async (req, res) => {
+  try {
+    const token = jwt.sign(
+      { tel: req.decoded.tel, name: req.decoded.name }, process.env.TOKEN_KEY
+    );
+    if (!token)
+      return res.status(401).send({ status: false, message: "ไม่สามารถสร้างรหัสแนะนำได้" })
+    return res.status(200).send({ status: true, message: "สร้างรหัสแนะนำสำเร็จ", data: token })
+  } catch (err) {
+    return res.status(500).send({ message: err.message });
+  }
+})
 
 module.exports = router;
